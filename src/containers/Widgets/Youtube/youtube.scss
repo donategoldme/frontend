@@ -1,0 +1,38 @@
+.widgets {
+  padding: 10px;
+  max-width: 100%;
+  .bordered {
+    border: 2px solid;
+  }
+  .reded {
+    color: red;
+  }
+  .greened {
+    color: green;
+  }
+  .show {
+    display: block;
+  }
+  .hide {
+    display: none;
+  }
+  .videoTitle {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .videoBorder {
+    border-bottom: 3px double #8c8b8b;
+  }
+  .overflow {
+    max-height: 265px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+  .noPadding {
+    padding: 0;
+  }
+  .pointer {
+    cursor: pointer;
+  }
+}
