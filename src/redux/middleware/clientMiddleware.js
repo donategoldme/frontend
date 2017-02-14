@@ -12,7 +12,10 @@ export default function clientMiddleware(client) {
 
       const [REQUEST, SUCCESS, FAILURE] = types;
       next({...rest, type: REQUEST});
-
+      if (getState().auth.user !== undefined) {
+        client.TOKEN = getState().auth.user.token;
+      }
+       // initial token for header
       const actionPromise = promise(client);
       actionPromise.then(
         (result) => next({...rest, result, type: SUCCESS}),

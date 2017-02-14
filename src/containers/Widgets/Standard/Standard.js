@@ -4,20 +4,27 @@ import {connect} from 'react-redux';
 import {Row, Button, Well, Col, Image} from 'react-bootstrap';
 import { asyncConnect } from 'redux-async-connect';
 import Slider from 'rc-slider';
-require('rc-slider/assets/index.css');
+import 'rc-slider/assets/index.css';
 
 import * as widgetActions from 'redux/modules/widgets/standard';
-import {isLoaded, load as loadWidgets} from 'redux/modules/widgets/standard';
+import {isLoaded, isLoadedDonates, load as loadWidgets, loadDonates} from 'redux/modules/widgets/standard';
 import {NameForm} from 'components/Forms/StandardWF/StandardWF';
+import StandardAddDonateForm from 'components/Forms/StandardWF/StandardAddDonateForm';
 import {activingTab} from 'redux/modules/uploader';
+import ListOfDonates from 'components/ListOfDonates/ListOfDonates';
 
 
 @asyncConnect([{
   deferred: true,
   promise: ({store: {dispatch, getState}}) => {
+    const promises = [];
     if (!isLoaded(getState())) {
-      return dispatch(loadWidgets());
+      promises.push(dispatch(loadWidgets()));
     }
+    if (!isLoadedDonates(getState())) {
+      promises.push(dispatch(loadDonates()));
+    }
+    return Promise.all(promises);
   }
 }])
 @connect(
@@ -26,7 +33,10 @@ import {activingTab} from 'redux/modules/uploader';
     results: state.standardWidget.results,
     error: state.standardWidget.error,
     dialog: state.standardWidget.dialog,
+    donates: state.standardWidget.donates,
     userId: state.auth.user.id,
+    addDonateForm: state.standardWidget.addDonateForm,
+    listOfDonates: state.standardWidget.listOfDonates,
   }),
   {...widgetActions, activingTab})
 export default class StandardWidget extends Component {
@@ -35,6 +45,9 @@ export default class StandardWidget extends Component {
     results: PropTypes.array.isRequired,
     error: PropTypes.any,
     dialog: PropTypes.bool.isRequired,
+    listOfDonates: PropTypes.bool.isRequired,
+    addDonateForm: PropTypes.bool.isRequired,
+    donates: PropTypes.object.isRequired,
     dialogOpen: PropTypes.func.isRequired,
     createNew: PropTypes.func.isRequired,
     saveWidget: PropTypes.func.isRequired,
@@ -43,12 +56,16 @@ export default class StandardWidget extends Component {
     editSound: PropTypes.func.isRequired,
     openWidget: PropTypes.func.isRequired,
     activingTab: PropTypes.func.isRequired,
+    viewedDonate: PropTypes.func.isRequired,
+    openAddDonateForm: PropTypes.func.isRequired,
+    openListOfDonates: PropTypes.func.isRequired,
     userId: PropTypes.number.isRequired,
   };
 
   render() {
     const {error, dialog, dialogOpen, createNew, widgets, results, saveWidget,
-    editImage, editSound, userId} = this.props;
+    editImage, editSound, userId, addDonateForm, openAddDonateForm, donates,
+    viewedDonate, openListOfDonates, listOfDonates} = this.props;
     const styles = require('./standard.scss');
     const handleDelete = (id) => {
       return () => {
@@ -77,11 +94,11 @@ export default class StandardWidget extends Component {
             <Helmet title={'Donates'}/>
             <Row>
               <h1>
-                YoutubeDJ
+                Стандартный виджет
               </h1>
               <Helmet title="Youtube Widgets"/>
               <p>
-                Виджет для создания плейлиста с помощью пользователей.
+                Виджет для отображения сбора денег
               </p>
               {error &&
                 <div className="alert alert-danger" role="alert">
@@ -89,12 +106,18 @@ export default class StandardWidget extends Component {
                 {' '}
                 {JSON.stringify(error)}
               </div>}
-              <Button onClick={createNew}> Create</Button>
+              <Button onClick={createNew}>Новая надстройка</Button>
+              <Button onClick={openAddDonateForm}>Добавить донат</Button>
+              <Button onClick={openListOfDonates}>{listOfDonates ? 'Закрыть донаты' : 'Открыть донаты' }</Button>
+              {addDonateForm && <StandardAddDonateForm/>}
+              <Col xs={12} md={12}>
+              {listOfDonates && <ListOfDonates viewedDonate={viewedDonate} list={donates.results} donates={donates.entities}/>}
+              </Col>
             </Row>
             <Row>
               {
                 results.map((id) =>
-                <Well className={widgets[id].active ? styles.active : ''}>
+                <Well key={id} className={widgets[id].active ? styles.active : ''}>
                 {widgets[id].opened === undefined || !widgets[id].opened ?
                   <Row>
                     <Col xs={12} md={1}>

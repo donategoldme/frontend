@@ -14,6 +14,7 @@ module.exports = Object.assign({
   port: process.env.PORT,
   apiHost: process.env.APIHOST || 'localhost',
   apiPort: process.env.APIPORT,
+  apiPath: process.env.APIPATH || '/api',
   uploadsHost: process.env.UPLOADSHOST || 'localhost',
   uploadsPort: process.env.UPLOADSPRORT || '3030',
   app: {

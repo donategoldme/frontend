@@ -1,5 +1,5 @@
 import {normalize} from 'normalizr';
-import {standardWidget} from 'schema/standardWidget';
+import {standardWidget, standardDonate} from 'schema/standardWidget';
 
 const LOAD = 'donategold.me/widgets/standard/LOAD';
 const LOAD_SUCCESS = 'donategold.me/widgets/standard/LOAD_SUCCESS';
@@ -18,15 +18,27 @@ const DELETE_SUCCESS = 'donategold.me/widgets/standard/DELETE_SUCCESS';
 const DELETE_FAIL = 'donategold.me/widgets/standard/DELETE_FAIL';
 const EDIT_IMAGE = 'donategold.me/widgets/standard/EDIT_IMAGE';
 const EDIT_SOUND = 'donategold.me/widgets/standard/EDIT_SOUND';
+const LOAD_DONATES = 'donategold.me/widgets/standard/LOAD_DONATES';
+const LOAD_DONATES_SUCCESS = 'donategold.me/widgets/standard/LOAD_DONATES_SUCCESS';
+const LOAD_DONATES_FAIL = 'donategold.me/widgets/standard/LOAD_DONATES_FAIL';
+const ADD_DONATE = 'donategold.me/widgets/standard/ADD_DONATE';
+const ADD_DONATE_SUCCESS = 'donategold.me/widgets/standard/ADD_DONATE_SUCCESS';
+const ADD_DONATE_FAIL = 'donategold.me/widgets/standard/ADD_DONATE_FAIL';
+const ADD_DONATE_FORM = 'donategold.me/widgets/standard/ADD_DONATE_FORM';
+const FAIL = 'donategold.me/widgets/standard/FAIL';
+const VIEWED_DONATE_SUCCESS = 'donategold.me/widgets/standard/VIEWED_DONATE_SUCCESS';
+const OPEN_LIST_OF_DONATES = 'donategold.me/widgets/standard/OPEN_LIST_OF_DONATES';
 
 const initialState = {
   loading: false,
   loaded: false,
   widgets: {},
   results: [],
+  donates: {results: [], entities: {}, loaded: false},
   error: null,
   dialog: false,
-  form: {},
+  addDonateForm: false,
+  listOfDonates: false,
 };
 
 function loadReducer(state, action) {
@@ -173,6 +185,84 @@ function editFileReducer(state, action) {
   }
 }
 
+function loadDonatesReducer(state, action) {
+  switch (action.type) {
+    case LOAD_DONATES:
+      return state;
+    case LOAD_DONATES_SUCCESS:
+      const donates = normalize(action.result, [standardDonate]);
+      return {
+        ...state,
+        donates: {
+          results: donates.result,
+          entities: donates.entities.standardDonate || {},
+          loaded: true,
+        }
+      };
+    case LOAD_DONATES_FAIL:
+      return {
+        ...state,
+        error: action.error
+      };
+    default:
+      return state;
+  }
+}
+
+function addDonateReducer(state, action) {
+  switch (action.type) {
+    case ADD_DONATE:
+      return state;
+    case ADD_DONATE_SUCCESS:
+      const results = state.donates.results.filter((id) => id !== action.result.id);
+      results.push(action.result.id);
+      const entities = {...state.donates.entities};
+      entities[action.result.id] = action.result;
+      return {
+        ...state,
+        donates: {
+          results: results,
+          entities: entities,
+        }
+      };
+    case ADD_DONATE_FAIL:
+      return {
+        ...state,
+        error: action.error,
+      };
+    default:
+      return state;
+  }
+}
+
+function viewedDonateReducer(state, action) {
+  switch (action.type) {
+    case VIEWED_DONATE_SUCCESS:
+      const results = state.donates.results.filter((id) => id !== action.result.id);
+      return {
+        ...state,
+        donates: {
+          entities: {...state.donates.entities},
+          results: results,
+        }
+      };
+    default:
+      return state;
+  }
+}
+
+function openListOfDonatesReducer(state, action) {
+  switch (action.type) {
+    case OPEN_LIST_OF_DONATES:
+      return {
+        ...state,
+        listOfDonates: !state.listOfDonates,
+      };
+    default:
+      return state;
+  }
+}
+
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
     case LOAD:
@@ -197,6 +287,18 @@ export default function reducer(state = initialState, action = {}) {
     case EDIT_IMAGE:
     case EDIT_SOUND:
       return editFileReducer(state, action);
+    case LOAD_DONATES:
+    case LOAD_DONATES_SUCCESS:
+    case LOAD_DONATES_FAIL:
+      return loadDonatesReducer(state, action);
+    case ADD_DONATE:
+    case ADD_DONATE_SUCCESS:
+    case ADD_DONATE_FAIL:
+      return addDonateReducer(state, action);
+    case VIEWED_DONATE_SUCCESS:
+      return viewedDonateReducer(state, action);
+    case OPEN_LIST_OF_DONATES:
+      return openListOfDonatesReducer(state, action);
     case OPEN_WIDGET:
       const data = {...state.widgets};
       data[action.id].opened = !data[action.id].opened;
@@ -204,15 +306,22 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         widgets: data
       };
-    // case EDIT_FIELD:
-    //   return editFieldReducer(state, action);
+    case ADD_DONATE_FORM:
+      return {
+        ...state,
+        addDonateForm: !state.addDonateForm,
+      };
     default:
       return state;
   }
 }
 
 export function isLoaded(globalState) {
-  return globalState.widgets && globalState.widgets.loaded;
+  return globalState.standardWidget && globalState.standardWidget.loaded;
+}
+
+export function isLoadedDonates(globalState) {
+  return globalState.standardWidget.donates && globalState.standardWidget.donates.loaded;
 }
 
 export function load() {
@@ -245,7 +354,7 @@ export function createNew() {
 export function saveWidget(widget) {
   return {
     types: [SAVE, SAVE, SAVE_FAIL],
-    promise: (client) => client.post(`/widgets/standard/${widget.id}`, {data: widget})
+    promise: (client) => client.post(`/widgets/standard/widget/${widget.id}`, {data: widget})
   };
 }
 
@@ -259,7 +368,7 @@ export function saveWidgetWS(widget) {
 export function deleteWidget(id) {
   return {
     types: [DELETE, DELETE_SUCCESS, DELETE_FAIL],
-    promise: (client) => client.del('/widgets/standard/' + id)
+    promise: (client) => client.del('/widgets/standard/widget/' + id)
   };
 }
 
@@ -292,5 +401,55 @@ export function editSound(id, sound) {
     type: EDIT_SOUND,
     id: id,
     sound: sound,
+  };
+}
+
+export function loadDonates() {
+  return {
+    types: [LOAD_DONATES, LOAD_DONATES_SUCCESS, LOAD_DONATES_FAIL],
+    promise: (client) => client.get('/widgets/standard/donates')
+  };
+}
+
+export function addDonate(values) {
+  values.money = +values.money;
+  values.viewed = !values.viewed;
+  return {
+    types: [ADD_DONATE, '', ADD_DONATE_FAIL],
+    promise: (client) => client.post('/widgets/standard/donates', {data: values})
+  };
+}
+
+export function addDonateWS(values) {
+  return {
+    type: ADD_DONATE_SUCCESS,
+    result: values,
+  };
+}
+
+export function viewedDonate(id) {
+  return {
+    types: ['', '', FAIL],
+    promise: (client) => client.post('/widgets/standard/donates/' + id)
+  };
+}
+
+export function viewedDonateWS(donate) {
+  return {
+    type: VIEWED_DONATE_SUCCESS,
+    result: donate,
+  };
+}
+
+export function openAddDonateForm() {
+  console.log('open');
+  return {
+    type: ADD_DONATE_FORM
+  };
+}
+
+export function openListOfDonates() {
+  return {
+    type: OPEN_LIST_OF_DONATES,
   };
 }

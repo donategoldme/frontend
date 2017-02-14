@@ -4,7 +4,7 @@ import {
   refreshBalance
 } from 'redux/modules/balance';
 import {addVideoSuccess, viewedVideoSuccess} from 'redux/modules/widgets/youtube';
-import {saveWidgetWS as saveStandardWidget} from 'redux/modules/widgets/standard';
+import * as standardWidget from 'redux/modules/widgets/standard';
 
 function switcher(dispatch, data) {
   console.log(data);
@@ -19,7 +19,13 @@ function switcher(dispatch, data) {
       dispatch(viewedVideoSuccess(data.video));
       break;
     case 'standard_prefs_save':
-      dispatch(saveStandardWidget(data.standard));
+      dispatch(standardWidget.saveWidgetWS(data.standard));
+      break;
+    case 'add_standard_donate':
+      dispatch(standardWidget.addDonateWS(data.donate));
+      break;
+    case 'save_standard_donate':
+      dispatch(standardWidget.viewedDonateWS(data.donate));
       break;
     default:
       break;

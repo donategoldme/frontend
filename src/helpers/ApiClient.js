@@ -7,7 +7,7 @@ function formatUrl(path) {
   const adjustedPath = path[0] !== '/' ? '/' + path : path;
   if (__SERVER__) {
     // Prepend host and port of the API server to the path.
-    return 'http://' + config.apiHost + ':' + config.apiPort + adjustedPath;
+    return 'http://' + config.apiHost + ':' + config.apiPort + config.apiPath + adjustedPath;
   }
   // Prepend `/api` to relative URL, to proxy to API server.
   return '/api' + adjustedPath;
@@ -15,9 +15,11 @@ function formatUrl(path) {
 
 export default class ApiClient {
   constructor(req) {
+    this.TOKEN = '';
     methods.forEach((method) =>
       this[method] = (path, { params, data } = {}, multipart = null) => new Promise((resolve, reject) => {
         const request = superagent[method](formatUrl(path));
+        request.set('X-TOKEN-KEY', this.TOKEN);
         if (params) {
           request.query(params);
         }

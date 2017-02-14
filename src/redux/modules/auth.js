@@ -12,7 +12,7 @@ const GET_URL_AUTH_SUCCESS = 'redux-example/auth/GET_URL_AUTH_SUCCESS';
 const GET_URL_AUTH_FAIL = 'redux-example/auth/GET_URL_AUTH_FAIL';
 
 const initialState = {
-  loaded: false
+  loaded: false,
 };
 
 export default function reducer(state = initialState, action = {}) {
