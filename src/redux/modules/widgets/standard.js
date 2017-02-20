@@ -413,7 +413,6 @@ export function loadDonates() {
 
 export function addDonate(values) {
   values.money = +values.money;
-  values.viewed = !values.viewed;
   return {
     types: [ADD_DONATE, '', ADD_DONATE_FAIL],
     promise: (client) => client.post('/widgets/standard/donates', {data: values})

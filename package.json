@@ -44,10 +44,7 @@
       "env": {
         "NODE_PATH": "./src",
         "NODE_ENV": "production",
-        "PORT": 80,
-        "APIHOST": "backend",
-        "APIPATH": "/api",
-        "APIPORT": 3030
+        "PORT": 80
       }
     },
     "start-dev": {
@@ -55,10 +52,7 @@
       "env": {
         "NODE_PATH": "./src",
         "NODE_ENV": "development",
-        "PORT": 80,
-        "APIPATH": "/api",
-        "APIPORT": 3030,
-        "UPLOADSPORT": 3030
+        "PORT": 80
       }
     },
     "watch-client": {
@@ -113,6 +107,7 @@
     "react": "^15.0",
     "react-addons-shallow-compare": "^15.4.2",
     "react-bootstrap": "^0.30.7",
+    "react-copy-to-clipboard": "^4.2.3",
     "react-dom": "^15.0",
     "react-helmet": "^2.2.0",
     "react-inline-css": "^2.0.0",

@@ -12,7 +12,7 @@ export default function clientMiddleware(client) {
 
       const [REQUEST, SUCCESS, FAILURE] = types;
       next({...rest, type: REQUEST});
-      if (getState().auth.user !== undefined) {
+      if (getState().auth.user !== undefined && getState().auth.user !== null) {
         client.TOKEN = getState().auth.user.token;
       }
        // initial token for header

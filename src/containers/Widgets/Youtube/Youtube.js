@@ -1,8 +1,10 @@
 import React, {Component, PropTypes} from 'react';
+import {Link} from 'react-router';
 import Helmet from 'react-helmet';
 import {connect} from 'react-redux';
 import * as widgetActions from 'redux/modules/widgets/youtube';
 import {initializeWithKey} from 'redux-form';
+import CopyToClipboard from 'react-copy-to-clipboard';
 
 import { asyncConnect } from 'redux-async-connect';
 import {Row, Col, Well, Button} from 'react-bootstrap';
@@ -27,12 +29,14 @@ import { YoutubeAddVideoForm as AddVideoForm, YoutubePlayer } from 'components';
     dialog: state.youtubeWidget.dialog,
     deleting: state.youtubeWidget.deleting,
     activing: state.youtubeWidget.activing,
+    user: state.auth.user
   }),
   {...widgetActions, initializeWithKey })
 export default class YoutubeWidget extends Component {
   static propTypes = {
     widgets: PropTypes.array,
     error: PropTypes.string,
+    user: PropTypes.object.isRequired,
     initializeWithKey: PropTypes.func.isRequired,
     editing: PropTypes.number.isRequired,
     activing: PropTypes.number.isRequired,
@@ -73,8 +77,12 @@ export default class YoutubeWidget extends Component {
       const {viewedVideo} = this.props;
       return () => viewedVideo(vid);
     };
-    const {widgets, error, editing, editStop, dialog, deleting, addVideoDialog} = this.props;
+    const {widgets, error, editing, editStop, dialog, deleting, addVideoDialog, user} = this.props;
     const styles = require('./youtube.scss');
+    let widgetScreen = '';
+    if (__CLIENT__) {
+      widgetScreen = 'http://' + document.location.hostname + '/screen/youtubeWidget?t=' + user.token;
+    }
     return (
       <Row className={styles.widgets}>
       {dialog && <ModalForm dialog={dialog} editStop={editStop} editing={editing}
@@ -86,6 +94,18 @@ export default class YoutubeWidget extends Component {
         <p>
           Виджет для создания плейлиста с помощью пользователей.
         </p>
+        {
+                  __CLIENT__ &&
+                    <div>
+                      <input readOnly value={widgetScreen} />
+                      <Link to={widgetScreen} target="_blank">
+                        <Button>Открыть</Button>
+                      </Link>
+                      <CopyToClipboard text={widgetScreen}>
+                      <Button>Скопировать</Button>
+                      </CopyToClipboard>
+                    </div>
+                }
         {error &&
         <div className="alert alert-danger" role="alert">
           <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

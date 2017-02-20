@@ -5,6 +5,7 @@ import {
 } from 'redux/modules/balance';
 import {addVideoSuccess, viewedVideoSuccess} from 'redux/modules/widgets/youtube';
 import * as standardWidget from 'redux/modules/widgets/standard';
+import * as cgoActions from 'redux/modules/centrifugo';
 
 function switcher(dispatch, data) {
   console.log(data);
@@ -34,6 +35,7 @@ function switcher(dispatch, data) {
 
 export default function getClient(userId, username, timestamp, token) {
   return (dispatch) => {
+    dispatch(cgoActions.connecting());
     const cgo = new Centrifuge({
       url: 'http://' + config.apiHost + ':8000',
       user: `${userId}`,
@@ -42,7 +44,9 @@ export default function getClient(userId, username, timestamp, token) {
       token: token,
       authEndpoint: '/api/auth/centrifugo'
     });
-    cgo.subscribe(`$${userId}`, (res) => switcher(dispatch, res.data));
+    cgo.subscribe(`$${userId}/`, (res) => switcher(dispatch, res.data));
+    cgo.on('connect', () => dispatch(cgoActions.connected(cgo)));
+    // cgo.on('disconnect', () => dispatch(cgoActions.disconnecting()));
     cgo.connect();
   };
 }

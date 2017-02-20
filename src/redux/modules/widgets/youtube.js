@@ -23,6 +23,9 @@ const ADD_VIDEO_FAIL = 'donategold.me/widgets/youtubeWF/ADD_VIDEO_FAIL';
 const VIEWED_VIDEO = 'donategold.me/widgets/youtubeWF/VIEWED_VIDEO';
 const VIEWED_VIDEO_SUCCESS = 'donategold.me/widgets/youtubeWF/VIEWED_VIDEO_SUCCESS';
 const VIEWED_VIDEO_FAIL = 'donategold.me/widgets/youtubeWF/VIEWED_VIDEO_FAIL';
+const VIEW_VIDEO = 'donategold.me/widgets/youtubeWF/VIEW_VIDEO';
+const VIEW_VIDEO_SUCCESS = 'donategold.me/widgets/youtubeWF/VIEW_VIDEO_SUCCESS';
+const VIEW_VIDEO_FAIL = 'donategold.me/widgets/youtubeWF/VIEW_VIDEO_FAIL';
 
 const initialState = {
   loaded: false,
@@ -392,6 +395,27 @@ export function viewedVideo(video) {
 export function viewedVideoSuccess(video) {
   return {
     type: VIEWED_VIDEO_SUCCESS,
+    result: video,
+  };
+}
+
+export function viewNowVideo(video) {
+  return {
+    types: [VIEW_VIDEO, VIEW_VIDEO, VIEW_VIDEO_FAIL],
+    promise: (client) => client.post('/widgets/youtube/1/viewNow', {data: video})
+  };
+}
+
+export function stopViewVideo() {
+  return {
+    types: [VIEW_VIDEO, VIEW_VIDEO, VIEW_VIDEO_FAIL],
+    promise: (client) => client.post('/widgets/youtube/1/stopView', {})
+  };
+}
+
+export function viewNowVideoSuccess(video) {
+  return {
+    type: VIEW_VIDEO_SUCCESS,
     result: video,
   };
 }

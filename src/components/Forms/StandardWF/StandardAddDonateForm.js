@@ -18,6 +18,7 @@ import * as widgetActions from 'redux/modules/widgets/standard';
   form: 'standard-addDonate',
   fields: ['nickname', 'message', 'money', 'viewed'],
   validate: validations,
+  initialValues: {viewed: true},
 })
 export default class StandardAddDonateForm extends Component {
   static propTypes = {
@@ -35,6 +36,7 @@ export default class StandardAddDonateForm extends Component {
   render() {
     const {openAddDonateForm, fields: {nickname, message, money, viewed}, handleSubmit, invalid,
       pristine, addDonate, submitting, values } = this.props;
+    console.log(viewed);
     return (
       <Form>
         <FormGroup controlId="youtubeVideoUrl">
@@ -53,7 +55,7 @@ export default class StandardAddDonateForm extends Component {
           {money.error && money.touched && <div className="text-danger">{money.error}</div>}
         </FormGroup>
         <FormGroup controlId="youtubeVideoUrl">
-            <ControlLabel>Показать на стриме <input type="checkbox" checked {...viewed}/></ControlLabel>
+            <ControlLabel>Показать на стриме <input type="checkbox" {...viewed}/></ControlLabel>
           {viewed.error && viewed.touched && <div className="text-danger">{viewed.error}</div>}
         </FormGroup>
         <Button className="btn btn-default"

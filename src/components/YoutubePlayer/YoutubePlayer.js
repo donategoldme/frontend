@@ -17,10 +17,12 @@ export default class YoutubePlayer extends Component {
   static propTypes = {
     video: PropTypes.object.isRequired,
     viewedVideo: PropTypes.func.isRequired,
+    viewNowVideo: PropTypes.func.isRequired,
+    stopViewVideo: PropTypes.func.isRequired,
   }
 
   render() {
-    const {video, viewedVideo} = this.props;
+    const {video, viewedVideo, viewNowVideo, stopViewVideo} = this.props;
     const viewed = (vid) => {
       return () => viewedVideo(vid);
     };
@@ -32,11 +34,13 @@ export default class YoutubePlayer extends Component {
     const onready = () => {
       console.log('ready');
     };
-    const onPlay = () => {
+    const onPlay = (vid) => {
       console.log('onPlay');
+      return () => viewNowVideo(vid);
     };
     const onPause = () => {
       console.log('onPause');
+      return stopViewVideo();
     };
     return (
         <div>
@@ -50,7 +54,7 @@ export default class YoutubePlayer extends Component {
                     // className={string}                // defaults -> null
                     opts={opts}                        // defaults -> {}
                     onReady={onready}                    // defaults -> noop
-                    onPlay={onPlay}                     // defaults -> noop
+                    onPlay={onPlay(video)}                     // defaults -> noop
                     onPause={onPause}                    // defaults -> noop
                     onEnd={viewed(video)}                      // defaults -> noop
                     // onError={func}                    // defaults -> noop

@@ -63,9 +63,7 @@ export default function reducer(state = initialState, action = {}) {
       };
     case LOGOUT_SUCCESS:
       return {
-        ...state,
-        loggingOut: false,
-        user: null
+        loaded: false,
       };
     case LOGOUT_FAIL:
       return {

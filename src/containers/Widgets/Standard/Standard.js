@@ -1,6 +1,8 @@
 import React, {Component, PropTypes} from 'react';
+import {Link} from 'react-router';
 import Helmet from 'react-helmet';
 import {connect} from 'react-redux';
+import CopyToClipboard from 'react-copy-to-clipboard';
 import {Row, Button, Well, Col, Image} from 'react-bootstrap';
 import { asyncConnect } from 'redux-async-connect';
 import Slider from 'rc-slider';
@@ -34,7 +36,7 @@ import ListOfDonates from 'components/ListOfDonates/ListOfDonates';
     error: state.standardWidget.error,
     dialog: state.standardWidget.dialog,
     donates: state.standardWidget.donates,
-    userId: state.auth.user.id,
+    user: state.auth.user,
     addDonateForm: state.standardWidget.addDonateForm,
     listOfDonates: state.standardWidget.listOfDonates,
   }),
@@ -59,13 +61,17 @@ export default class StandardWidget extends Component {
     viewedDonate: PropTypes.func.isRequired,
     openAddDonateForm: PropTypes.func.isRequired,
     openListOfDonates: PropTypes.func.isRequired,
-    userId: PropTypes.number.isRequired,
+    user: PropTypes.object.isRequired,
   };
 
   render() {
     const {error, dialog, dialogOpen, createNew, widgets, results, saveWidget,
-    editImage, editSound, userId, addDonateForm, openAddDonateForm, donates,
+    editImage, editSound, user, addDonateForm, openAddDonateForm, donates,
     viewedDonate, openListOfDonates, listOfDonates} = this.props;
+    let widgetScreen = '';
+    if (__CLIENT__) {
+      widgetScreen = 'http://' + document.location.hostname + '/screen/standardWidget?t=' + user.token;
+    }
     const styles = require('./standard.scss');
     const handleDelete = (id) => {
       return () => {
@@ -97,9 +103,21 @@ export default class StandardWidget extends Component {
                 Стандартный виджет
               </h1>
               <Helmet title="Youtube Widgets"/>
-              <p>
-                Виджет для отображения сбора денег
-              </p>
+              <div>
+                <p>Виджет для отображения сбора денег</p>
+                {
+                  __CLIENT__ &&
+                    <div>
+                      <input readOnly value={widgetScreen} />
+                      <Link to={widgetScreen} target="_blank">
+                        <Button>Открыть</Button>
+                      </Link>
+                      <CopyToClipboard text={widgetScreen}>
+                      <Button>Скопировать</Button>
+                      </CopyToClipboard>
+                    </div>
+                }
+              </div>
               {error &&
                 <div className="alert alert-danger" role="alert">
                 <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -122,7 +140,7 @@ export default class StandardWidget extends Component {
                   <Row>
                     <Col xs={12} md={1}>
                       {widgets[id].pic ?
-                        <Image src={`/uploads/${userId}/pic/${widgets[id].pic}`} responsive/>
+                        <Image src={`/uploads/${user.id}/pic/${widgets[id].pic}`} responsive/>
                       :
                         null
                       }
@@ -165,7 +183,7 @@ export default class StandardWidget extends Component {
                   :
                 <Row>
                     <Col xs={12} md={12}>
-                      <NameForm activingTab={this.props.activingTab} userId={userId} editImage={editImage} editSound={editSound}
+                      <NameForm activingTab={this.props.activingTab} userId={user.id} editImage={editImage} editSound={editSound}
                       widget={widgets[id]} saveWidget={saveWidget} dialog={dialog} dialogOpen={dialogOpen}/>
                     </Col>
                   </Row>

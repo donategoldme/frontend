@@ -24,6 +24,7 @@ const uploadsUrl = 'http://' + config.uploadsHost + ':' + config.uploadsPort;
 const pretty = new PrettyError();
 const app = new Express();
 const server = new http.Server(app);
+console.log(targetUrl);
 const proxy = httpProxy.createProxyServer({
   target: targetUrl + config.apiPath,
   ws: true
@@ -41,7 +42,7 @@ app.use(Express.static(path.join(__dirname, '..', 'static')));
 
 // Proxy to API server
 app.use('/api', (req, res) => {
-  proxy.web(req, res, {target: targetUrl + config.apiPath, forward: targetUrl + config.apiPath});
+  proxy.web(req, res, );
 });
 
 app.use('/uploads/', (req, res) => {

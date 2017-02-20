@@ -1,31 +1,51 @@
-const CENTRIFUGO_CONNECTING = 'centrifugo/CENTRIFUGO_CONNECTING';
-const CENTRIFUGO_CONNECTED_SUCCESS = 'centrifugo/CENTRIFUGO_CONNECTED_SUCCEESS';
-const CENTRIFUGO_CONNECTED_FAIL = 'centrifugo/CENTRIFUGO_CONNECTED_FAIL';
-const CENTRIFUGO_CLOSE = 'centrifugo/CENTRIFUGO_CLOSE';
+const CENTRIFUGO_CONNECTING = 'donategold.me/centrifugo/CENTRIFUGO_CONNECTING';
+const CENTRIFUGO_CONNECTED_SUCCESS = 'donategold.me/centrifugo/CENTRIFUGO_CONNECTED_SUCCEESS';
+const CENTRIFUGO_CONNECTED_FAIL = 'donategold.me/centrifugo/CENTRIFUGO_CONNECTED_FAIL';
+const CENTRIFUGO_CLOSE = 'donategold.me/centrifugo/CENTRIFUGO_CLOSE';
+const CENTRIFUGO_DISCONNECTING = 'donategold.me/centrifugo/CENTRIFUGO_DISCONNECTING';
+const SUBSCRIBE = 'donategold.me/centrifugo/SUBSCRIBE';
 
 export function connecting() {
   return {
     type: CENTRIFUGO_CONNECTING,
-    action: {}
+    connecting: true,
   };
 }
 
-export function connected() {
+export function connected(client) {
   return {
-    type: CENTRIFUGO_CONNECTED_SUCCESS
+    type: CENTRIFUGO_CONNECTED_SUCCESS,
+    cgo: client,
+    connected: true,
+    connecting: false,
   };
 }
 
 export function connectedFail(error) {
   return {
     type: CENTRIFUGO_CONNECTED_FAIL,
-    action: error
+    action: error,
+    connecting: false
   };
 }
 
-export function close() {
+export function disconnecting() {
+  return {
+    type: CENTRIFUGO_DISCONNECTING,
+  };
+}
+
+export function closeCGO() {
   return {
     type: CENTRIFUGO_CLOSE
+  };
+}
+
+export function subscribe(ch, callback) {
+  return {
+    type: SUBSCRIBE,
+    ch: ch,
+    callback: callback,
   };
 }
 
@@ -33,6 +53,7 @@ const initialState = {
   connected: false,
   connecting: false
 };
+
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
@@ -44,7 +65,8 @@ export default function reducer(state = initialState, action) {
     case CENTRIFUGO_CONNECTED_SUCCESS:
       return {
         connecting: false,
-        connected: true
+        connected: true,
+        cgo: action.cgo,
       };
     case CENTRIFUGO_CONNECTED_FAIL:
       return {
@@ -53,11 +75,24 @@ export default function reducer(state = initialState, action) {
         error: action.error
       };
     case CENTRIFUGO_CLOSE:
+      state.cgo.disconnect();
+      return {
+        connected: false,
+        connecting: false
+      };
+    case CENTRIFUGO_DISCONNECTING:
       return {
         connecting: false,
         connected: false
       };
+    case SUBSCRIBE:
+      state.cgo.subscribe(action.ch, action.callback);
+      return state;
     default:
       return state;
   }
+}
+
+export function isConnected(cgoState) {
+  return cgoState.connected || cgoState.connecting;
 }

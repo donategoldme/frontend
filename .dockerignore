@@ -6,3 +6,7 @@ Dockerfile
 node_modules
 README.md
 task.json
+docs/
+api/
+.vscode/
+.idea/
