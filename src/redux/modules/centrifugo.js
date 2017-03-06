@@ -51,7 +51,8 @@ export function subscribe(ch, callback) {
 
 const initialState = {
   connected: false,
-  connecting: false
+  connecting: false,
+  subChanls: {},
 };
 
 
@@ -59,17 +60,20 @@ export default function reducer(state = initialState, action) {
   switch (action.type) {
     case CENTRIFUGO_CONNECTING:
       return {
+        ...state,
         connecting: true,
         connected: false
       };
     case CENTRIFUGO_CONNECTED_SUCCESS:
       return {
+        ...state,
         connecting: false,
         connected: true,
         cgo: action.cgo,
       };
     case CENTRIFUGO_CONNECTED_FAIL:
       return {
+        ...state,
         connecting: false,
         connected: false,
         error: action.error
@@ -82,11 +86,21 @@ export default function reducer(state = initialState, action) {
       };
     case CENTRIFUGO_DISCONNECTING:
       return {
+        ...state,
         connecting: false,
         connected: false
       };
     case SUBSCRIBE:
-      state.cgo.subscribe(action.ch, action.callback);
+      console.log(state);
+      if (!state.subChanls[action.ch]) {
+        const subChanls = {...state.subChanls};
+        state.cgo.subscribe(action.ch, action.callback);
+        subChanls[action.ch] = true;
+        return {
+          ...state,
+          subChanls: subChanls,
+        };
+      }
       return state;
     default:
       return state;

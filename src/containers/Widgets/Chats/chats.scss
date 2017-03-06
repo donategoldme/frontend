@@ -1,0 +1,30 @@
+.chats {
+    max-height: 500px;
+    width: 500px;
+    font-size: 16px;
+    overflow-y: overlay;
+}
+
+.messageWrap {
+    padding-right: 10px;
+}
+
+.anotherMessagesWrap {
+    cursor: pointer;
+    position: absolute;
+    z-index: 1;
+    bottom: 0px;
+    text-align: center;
+    left: 20px;
+    right: 20px;
+    background-color: rgba(0,0,0,.7);
+    color: white;
+    padding: 5px 0;
+    opacity: 1;
+    // -webkit-backface-visibility: hidden;
+    transition: opacity .2s ease-in-out;
+}
+
+.anotherMessages {
+    padding-right: 10px;
+}

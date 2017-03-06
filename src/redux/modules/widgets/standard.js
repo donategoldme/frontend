@@ -53,8 +53,8 @@ function loadReducer(state, action) {
       return {
         ...state,
         loaded: true,
-        widgets: data.entities.standard,
-        results: data.result,
+        widgets: data.entities.standard || {},
+        results: data.result || [],
       };
     case LOAD_FAIL:
       return {

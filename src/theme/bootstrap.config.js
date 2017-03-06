@@ -51,7 +51,7 @@ module.exports = {
     pagination: true,
     pager: true,
     labels: true,
-    badges: true,
+    badges: false,
     jumbotron: true,
     thumbnails: true,
     alerts: true,

@@ -20,6 +20,9 @@ export default class Widgets extends Component {
           <LinkContainer to="/widgets/standard">
             <NavItem>Donates</NavItem>
           </LinkContainer>
+          <LinkContainer to="/widgets/chats">
+            <NavItem>Chats</NavItem>
+          </LinkContainer>
         </Nav>
         <Helmet title="Widgets"/>
         <div className={styles.appContent + ' col-md-10'}>

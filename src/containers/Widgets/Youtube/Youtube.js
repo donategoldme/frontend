@@ -155,7 +155,7 @@ export default class YoutubeWidget extends Component {
                   ?
                   <div>
                   <Col xs={12} md={8}>
-                    <YoutubePlayer video={widget.videos[0]} />
+                    <YoutubePlayer video={widget.videos[0]} last={widget.videos.length < 2 ? true : false} />
                   </Col>
                   <Col xs={12} md={4}>
                     <Row>

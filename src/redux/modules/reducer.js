@@ -12,6 +12,7 @@ import balance from './balance';
 import centrifugo from './centrifugo';
 import youtubeWidget from './widgets/youtube';
 import standardWidget from './widgets/standard';
+import chatsWidget from './widgets/chats';
 import uploader from './uploader';
 
 export default combineReducers({
@@ -31,4 +32,5 @@ export default combineReducers({
   youtubeWidget,
   standardWidget,
   uploader,
+  chatsWidget,
 });

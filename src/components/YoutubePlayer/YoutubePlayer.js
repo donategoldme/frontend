@@ -16,15 +16,21 @@ import * as widgetActions from 'redux/modules/widgets/youtube';
 export default class YoutubePlayer extends Component {
   static propTypes = {
     video: PropTypes.object.isRequired,
+    last: PropTypes.bool.isRequired,
     viewedVideo: PropTypes.func.isRequired,
     viewNowVideo: PropTypes.func.isRequired,
     stopViewVideo: PropTypes.func.isRequired,
   }
 
   render() {
-    const {video, viewedVideo, viewNowVideo, stopViewVideo} = this.props;
+    const {video, viewedVideo, viewNowVideo, stopViewVideo, last} = this.props;
     const viewed = (vid) => {
-      return () => viewedVideo(vid);
+      return () => {
+        if (last) {
+          stopViewVideo();
+        }
+        viewedVideo(vid);
+      };
     };
     const opts = {
       playerVars: {

@@ -45,7 +45,8 @@ export default function getClient(userId, username, timestamp, token) {
       authEndpoint: '/api/auth/centrifugo'
     });
     cgo.subscribe(`$${userId}/`, (res) => switcher(dispatch, res.data));
-    cgo.on('connect', () => dispatch(cgoActions.connected(cgo)));
+    dispatch(cgoActions.connected(cgo));
+    cgo.on('connect', () => console.log('connected'));
     // cgo.on('disconnect', () => dispatch(cgoActions.disconnecting()));
     cgo.connect();
   };

@@ -8,9 +8,54 @@
   padding-left: 50px;
 }
 
-.navbar-default .navbar-nav > .active > a,
-.navbar-default .navbar-nav > .active > a:hover,
-.navbar-default .navbar-nav > .active > a:focus {
+.navbar-default .navbar-nav>.active>a,
+.navbar-default .navbar-nav>.active>a:hover,
+.navbar-default .navbar-nav>.active>a:focus {
   color: #33e0ff;
   background-color: transparent;
+}
+
+.full-message {
+  width: 100%;
+  float: left;
+  background-color: #1a1a1a;
+  border-bottom: 2px #f1f1f1 solid;
+  padding: 5px 2px;
+  font-size: 16px;
+}
+
+.nickname-badge {
+  float: left;
+  padding: 0 5px;
+}
+
+.badge {
+  float: left;
+  padding: 0 4px 0px 0px;
+  height: 19px;
+}
+
+.nickname {
+  float: left;
+  padding: 0;
+  // line-height: 30px;
+  margin: 0;
+  color: #7797be;
+}
+
+.separator {
+    float: left;
+   :after {
+    content: ":";
+  }
+}
+
+.message {
+  padding: 0 5px;
+  display: block;
+  // line-height: 30px;
+  color: #b2b2b2;
+}
+.smile {
+  height: 25px;
 }

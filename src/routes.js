@@ -9,6 +9,7 @@ import {
     NotFound,
     YoutubeWidget,
     StandardWidget,
+    ChatsWidget,
   } from 'containers';
 
 export default (store) => {
@@ -53,6 +54,7 @@ export default (store) => {
           <IndexRoute component={Home}/>
           <Route path="youtube" component={YoutubeWidget}/>
           <Route path="standard" component={StandardWidget}/>
+          <Route path="chats" component={ChatsWidget}/>
         </Route>
       </Route>
       { /* Catch all route */ }

@@ -105,8 +105,6 @@ export default class StandardWidget extends Component {
               <Helmet title="Youtube Widgets"/>
               <div>
                 <p>Виджет для отображения сбора денег</p>
-                {
-                  __CLIENT__ &&
                     <div>
                       <input readOnly value={widgetScreen} />
                       <Link to={widgetScreen} target="_blank">
@@ -116,7 +114,6 @@ export default class StandardWidget extends Component {
                       <Button>Скопировать</Button>
                       </CopyToClipboard>
                     </div>
-                }
               </div>
               {error &&
                 <div className="alert alert-danger" role="alert">
