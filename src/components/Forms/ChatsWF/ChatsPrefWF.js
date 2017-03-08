@@ -11,12 +11,14 @@ export function ChatsPrefWF(props) {
   let colorBg = props.widget.color_bg || '{}';
   let fontSize = null;
   let fontFamily = null;
-  let paddingBot = null;
+  let padding = null;
+  let marginBot = null;
   let borderRadius = null;
   let badges = null;
   let css = null;
   const saveWidget = () => {
     return () => {
+      console.log(badges);
       const {widget} = props;
       widget.width = +width.value;
       widget.height = +height.value;
@@ -25,9 +27,10 @@ export function ChatsPrefWF(props) {
       widget.color_bg = colorBg;
       widget.font_size = +fontSize.value;
       widget.font_family = fontFamily.value;
-      widget.padding_bot = +paddingBot.value;
+      widget.padding = +padding.value;
+      widget.margin_bot = +marginBot.value;
       widget.border_radius = +borderRadius.value;
-      widget.badges = badges.value;
+      widget.badges = badges.checked;
       widget.css = css.value;
       return props.saveWidget(widget);
     };
@@ -91,9 +94,15 @@ export function ChatsPrefWF(props) {
         </FormGroup>
         <FormGroup>
           <ControlLabel>
+            Отступ внутри сообщения:
+          </ControlLabel>
+          <input type="number" className="form-control" defaultValue={props.widget.padding} ref={(input) => padding = input} />
+        </FormGroup>
+        <FormGroup>
+          <ControlLabel>
             Отступ между сообщениями:
           </ControlLabel>
-          <input type="number" className="form-control" defaultValue={props.widget.padding_bot} ref={(input) => paddingBot = input} />
+          <input type="number" className="form-control" defaultValue={props.widget.margin_bot} ref={(input) => marginBot = input} />
         </FormGroup>
         <FormGroup>
           <ControlLabel>
@@ -105,7 +114,7 @@ export function ChatsPrefWF(props) {
           <ControlLabel>
             Показывать бейджи(значки модераторов, подписчики):
           </ControlLabel>
-          <input type="checkbox" className="form-control" defaultValue={props.widget.badges} ref={(input) => badges = input} />
+          <input type="checkbox" className="form-control" checked={props.widget.badges} ref={(input) => badges = input} />
         </FormGroup>
         <FormGroup>
           <ControlLabel>
