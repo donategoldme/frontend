@@ -9,9 +9,10 @@ import 'rc-slider/assets/index.css';
 
 import * as widgetActions from 'redux/modules/widgets/chats';
 import {subscribe} from 'redux/modules/centrifugo';
-import {isLoaded, loadChats as loadWidgets} from 'redux/modules/widgets/chats';
+import {isLoaded, loadChats as loadWidgets, loadPrefs} from 'redux/modules/widgets/chats';
 import ChatsAddForm from 'components/Forms/ChatsWF/ChatsAddForm';
 import {ChatNew} from './Chat';
+import {PrefsModalForm} from './PrefModel';
 
 
 @asyncConnect([{
@@ -20,6 +21,7 @@ import {ChatNew} from './Chat';
     const promises = [];
     if (!isLoaded(getState())) {
       promises.push(dispatch(loadWidgets()));
+      promises.push(dispatch(loadPrefs()));
     }
     return Promise.all(promises);
   }
@@ -32,6 +34,8 @@ import {ChatNew} from './Chat';
     user: state.auth.user,
     openChat: state.chatsWidget.openChat,
     openChatForm: state.chatsWidget.openChatForm,
+    openPrefs: state.chatsWidget.openPrefs,
+    prefs: state.chatsWidget.prefs,
     cgo: state.centrifugo,
   }),
   {...widgetActions, subscribe})
@@ -39,13 +43,17 @@ export default class ChatsWidget extends Component {
   static propTypes = {
     entities: PropTypes.object.isRequired,
     results: PropTypes.array.isRequired,
+    prefs: PropTypes.object.isRequired,
     error: PropTypes.any,
     addChat: PropTypes.func.isRequired,
     removeChat: PropTypes.func.isRequired,
     openChat: PropTypes.bool.isRequired,
+    openPrefs: PropTypes.bool.isRequired,
     openChatForm: PropTypes.bool.isRequired,
     openingForm: PropTypes.func.isRequired,
     openingChat: PropTypes.func.isRequired,
+    openingPrefs: PropTypes.func.isRequired,
+    savePrefs: PropTypes.func.isRequired,
     subscribe: PropTypes.func.isRequired,
     addMessage: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired,
@@ -53,9 +61,8 @@ export default class ChatsWidget extends Component {
   };
 
   render() {
-    console.log('render');
     const {error, entities, results, user, removeChat, openingForm, openingChat,
-    openChat, openChatForm} = this.props;
+    openChat, openChatForm, prefs, openPrefs, openingPrefs, savePrefs} = this.props;
     let widgetScreen = '';
     if (__CLIENT__) {
       widgetScreen = 'http://' + document.location.hostname + '/screen/chatsWidget?t=' + user.token;
@@ -73,6 +80,8 @@ export default class ChatsWidget extends Component {
     };
     return (
           <div>
+            {openPrefs && <PrefsModalForm dialog={openPrefs} editStop={openingPrefs}
+             widget={prefs} saveWidget={savePrefs}/>}
             <Helmet title={'Donates'}/>
             <Row>
               <h1>
@@ -101,6 +110,7 @@ export default class ChatsWidget extends Component {
                 {JSON.stringify(error)}
               </div>}
               <Button onClick={openingForm}>Присоединить новый чат</Button>
+              <Button onClick={openingPrefs}>Настройка отображения чата</Button>
               <Button onClick={handleOpenChat}>{openChat ? 'Закрыть чат' : 'Открыть чат' }</Button>
               {openChatForm && <ChatsAddForm/>}
               {openChat && <Col xs={12} md={12}>

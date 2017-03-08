@@ -1,7 +1,6 @@
 import {createValidator, required} from 'utils/validation';
 
-const widgetValidation = createValidator({
+export const chatsAddValidation = createValidator({
   url: [required],
 });
 
-export default widgetValidation;

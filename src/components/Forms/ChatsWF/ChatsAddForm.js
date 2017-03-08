@@ -5,7 +5,7 @@ import {reduxForm} from 'redux-form';
 import {FormGroup, Button, ControlLabel, FormControl, Form} from 'react-bootstrap';
 
 
-import validations from './widgetValidation';
+import {chatsAddValidation as validations} from './widgetValidation';
 import * as widgetActions from 'redux/modules/widgets/chats';
 
 @connect(

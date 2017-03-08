@@ -107,6 +107,7 @@
     "react": "^15.0",
     "react-addons-shallow-compare": "^15.4.2",
     "react-bootstrap": "^0.30.7",
+    "react-color": "^2.11.3",
     "react-copy-to-clipboard": "^4.2.3",
     "react-custom-scrollbars": "^4.0.2",
     "react-dom": "^15.0",
