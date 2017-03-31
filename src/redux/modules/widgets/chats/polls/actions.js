@@ -1,0 +1,13 @@
+export const GET_POLL = 'donategold.me/chats/GET_POLL';
+export const GET_POLL_SUCCESS = 'donategold.me/chats/GET_POLL_SUCCESS';
+export const GET_POLL_FAIL = 'donategold.me/chats/GET_POLL_FAIL';
+export const SAVE_POLL = 'donategold.me/chats/SAVE_POLL';
+export const SAVE_POLL_SUCCESS = 'donategold.me/chats/SAVE_POLL_SUCCESS';
+export const SAVE_POLL_FAIL = 'donategold.me/chats/SAVE_POLL_FAIL';
+export const DELETE_POLL = 'donategold.me/chats/DELETE_POLL';
+export const DELETE_POLL_SUCCESS = 'donategold.me/chats/DELETE_POLL_SUCCESS';
+export const DELETE_POLL_FAIL = 'donategold.me/chats/DELETE_POLL_FAIL';
+export const POLL_ADD = 'donategold.me/chats/POLL_ADD';
+export const GET_POLL_WS = 'get_polls_success';
+export const SAVE_POLL_WS = 'save_polls_success';
+export const DELETE_POLL_WS = 'delete_polls_success';

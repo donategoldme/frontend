@@ -98,9 +98,21 @@ export default class App extends Component {
 
           <Navbar.Collapse>
             <Nav navbar>
-              {user && <LinkContainer to="/widgets">
-                <NavItem>Widgets</NavItem>
-              </LinkContainer>}
+              {user &&
+                <LinkContainer to="/widgets/chats">
+                  <NavItem>Chats</NavItem>
+                </LinkContainer>
+              }
+              {user &&
+                <LinkContainer to="/widgets/standard">
+                  <NavItem>Standard</NavItem>
+                </LinkContainer>
+              }
+              {user &&
+                <LinkContainer to="/widgets/youtube">
+                  <NavItem>YoutubeDJ</NavItem>
+                </LinkContainer>
+              }
 
               {!user &&
               <LinkContainer to="/auth/twitch/callback">

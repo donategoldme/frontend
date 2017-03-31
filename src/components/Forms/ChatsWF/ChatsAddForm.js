@@ -6,7 +6,7 @@ import {FormGroup, Button, ControlLabel, FormControl, Form} from 'react-bootstra
 
 
 import {chatsAddValidation as validations} from './widgetValidation';
-import * as widgetActions from 'redux/modules/widgets/chats';
+import * as widgetActions from 'redux/modules/widgets/chats/chats';
 
 @connect(
   state => ({

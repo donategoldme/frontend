@@ -2,14 +2,11 @@ import React from 'react';
 import {IndexRoute, Route} from 'react-router';
 import { isLoaded as isAuthLoaded, load as loadAuth } from 'redux/modules/auth';
 import {
-    App,
-    Home,
-    Widgets,
-    Login,
-    NotFound,
-    YoutubeWidget,
-    StandardWidget,
-    ChatsWidget,
+    App, Home, Widgets, Login, NotFound,
+    YoutubeHome, YoutubeWidget,
+    StandardHome, StandardWidget,
+    ChatsWidget, ChatsHome, ChatWidget, ChatsConnect, ChatPrefs,
+    PollsWidget,
   } from 'containers';
 
 export default (store) => {
@@ -52,9 +49,19 @@ export default (store) => {
       <Route onEnter={requireLogin}>
         <Route path="widgets" component={Widgets}>
           <IndexRoute component={Home}/>
-          <Route path="youtube" component={YoutubeWidget}/>
-          <Route path="standard" component={StandardWidget}/>
-          <Route path="chats" component={ChatsWidget}/>
+          <Route path="youtube" component={YoutubeHome}>
+            <IndexRoute component={YoutubeWidget}/>
+          </Route>
+          <Route path="standard" component={StandardHome}>
+            <IndexRoute component={StandardWidget}/>
+          </Route>
+          <Route path="chats" component={ChatsWidget}>
+            <IndexRoute component={ChatsHome}/>
+            <Route path="connect" component={ChatsConnect}/>
+            <Route path="chat" component={ChatWidget}/>
+            <Route path="prefs" component={ChatPrefs}/>
+            <Route path="polls" component={PollsWidget}/>
+          </Route>
         </Route>
       </Route>
       { /* Catch all route */ }

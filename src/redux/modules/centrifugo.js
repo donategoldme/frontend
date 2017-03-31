@@ -41,11 +41,12 @@ export function closeCGO() {
   };
 }
 
-export function subscribe(ch, callback) {
+export function subscribe(ch, callback, suber) {
   return {
     type: SUBSCRIBE,
     ch: ch,
     callback: callback,
+    suber: suber,
   };
 }
 
@@ -92,10 +93,13 @@ export default function reducer(state = initialState, action) {
       };
     case SUBSCRIBE:
       console.log(state);
-      if (!state.subChanls[action.ch]) {
-        const subChanls = {...state.subChanls};
+      const subChanls = {...state.subChanls};
+      if (!subChanls[action.ch]) {
+        subChanls[action.ch] = {};
+      }
+      if (!subChanls[action.ch][action.suber]) {
         state.cgo.subscribe(action.ch, action.callback);
-        subChanls[action.ch] = true;
+        subChanls[action.ch][action.suber] = true;
         return {
           ...state,
           subChanls: subChanls,

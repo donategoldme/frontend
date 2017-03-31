@@ -12,7 +12,7 @@ import balance from './balance';
 import centrifugo from './centrifugo';
 import youtubeWidget from './widgets/youtube';
 import standardWidget from './widgets/standard';
-import chatsWidget from './widgets/chats';
+import chatsWidget from './widgets/chats/reducer';
 import uploader from './uploader';
 
 export default combineReducers({
