@@ -5,9 +5,7 @@ function getPollReducer(state, action) {
     case actions.GET_POLL:
       return state;
     case actions.GET_POLL_SUCCESS:
-      console.log(!state.poll.time);
-      console.log(state.poll.time < action.result.time);
-      if (!state.poll.time || state.poll.time < action.result.time) {
+      if (state.poll === null || state.poll.time < action.result.time) {
         return {
           ...state,
           poll: action.result,

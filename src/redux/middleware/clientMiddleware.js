@@ -9,10 +9,13 @@ export default function clientMiddleware(client) {
       if (!promise) {
         return next(action);
       }
-
+      if (!types) {
+        const actionPromise = promise(client);
+        return actionPromise;
+      }
       const [REQUEST, SUCCESS, FAILURE] = types;
       next({...rest, type: REQUEST});
-      if (getState().auth.user !== undefined && getState().auth.user !== null) {
+      if (client.TOKEN === '' && getState().auth.user !== undefined && getState().auth.user !== null) {
         client.TOKEN = getState().auth.user.token;
       }
        // initial token for header

@@ -10,7 +10,7 @@ const initialValues = {
   results: [],
   entities: {},
   messages: [],
-  poll: {},
+  poll: null,
   pollAdd: false,
   error: '',
 };

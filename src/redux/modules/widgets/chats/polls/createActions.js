@@ -47,3 +47,9 @@ export function pollAdd() {
     type: actions.POLL_ADD,
   };
 }
+
+export function pollOnScreen(view) {
+  return {
+    promise: (client) => client.post('/widgets/chats/polls/view', {params: {view: view}})
+  };
+}

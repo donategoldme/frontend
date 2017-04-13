@@ -45,7 +45,7 @@ function switcher(getPoll, savePoll, removePoll) {
   {subscribe, ...createActions})
 export default class PollsWidget extends PureComponent {
   static propTypes = {
-    poll: PropTypes.object.isRequired,
+    poll: PropTypes.object,
     pollAddS: PropTypes.bool.isRequired,
     getPoll: PropTypes.func.isRequired,
     savePoll: PropTypes.func.isRequired,
@@ -54,6 +54,7 @@ export default class PollsWidget extends PureComponent {
     savePollWS: PropTypes.func.isRequired,
     removePollWS: PropTypes.func.isRequired,
     pollAdd: PropTypes.func.isRequired,
+    pollOnScreen: PropTypes.func.isRequired,
     subscribe: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired,
   };
@@ -71,12 +72,25 @@ export default class PollsWidget extends PureComponent {
   }
 
   render() {
+    const toStream = (view) => {
+      return () => {
+        return this.props.pollOnScreen(view);
+      };
+    };
     return (
       <div>
         Screen of polls
         <Button onClick={this.props.pollAdd}>Новый опрос</Button>
         {this.props.pollAddS && <PollForm onSubmit={this.props.savePoll}/>}
-        {__CLIENT__ && <VoteChart poll={this.props.poll}/>}
+        {this.props.poll !== null ?
+          <div>
+            <Button onClick={toStream(true)}>Показать на стриме</Button>
+            <Button onClick={toStream(false)}>Убрать со стрима</Button>
+            <VoteChart poll={this.props.poll}/>
+          </div>
+          :
+          <p>Опрос не создан</p>
+        }
       </div>
     );
   }
