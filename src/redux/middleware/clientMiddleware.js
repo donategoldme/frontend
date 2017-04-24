@@ -21,7 +21,12 @@ export default function clientMiddleware(client) {
        // initial token for header
       const actionPromise = promise(client);
       actionPromise.then(
-        (result) => next({...rest, result, type: SUCCESS}),
+        (result) => {
+          if (result === 'close window' && __CLIENT__) {
+            window.close();
+          }
+          next({...rest, result, type: SUCCESS});
+        },
         (error) => {
           next({...rest, error, type: FAILURE});
         }).catch((error)=> {

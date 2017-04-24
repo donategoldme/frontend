@@ -114,6 +114,12 @@ export default class App extends Component {
                 </LinkContainer>
               }
 
+              {user &&
+                <LinkContainer to="/profile">
+                  <NavItem>Profile</NavItem>
+                </LinkContainer>
+              }
+
               {!user &&
               <LinkContainer to="/auth/twitch/callback">
               <NavItem>Twitch</NavItem>

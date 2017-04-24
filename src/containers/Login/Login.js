@@ -28,13 +28,13 @@ export default class Login extends Component {
     params: PropTypes.object,
     location: PropTypes.object,
     push: PropTypes.func.isRequired,
-    login: PropTypes.func,
-    getUrlAuth: PropTypes.func,
-    logout: PropTypes.func
+    login: PropTypes.func.isRequired,
+    getUrlAuth: PropTypes.func.isRequired,
+    logout: PropTypes.func.isRequired,
   }
 
   componentWillMount() {
-    if (!__SERVER__ && !this.props.auth.user) {
+    if (__CLIENT__) {
       let data = undefined;
       switch (this.props.params.provider) {
         case 'twitch':
@@ -47,9 +47,7 @@ export default class Login extends Component {
           data = undefined;
       }
       if (!!data) {
-        if (!this.props.auth.loggingIn) {
-          this.props.login(this.props.params.provider, data);
-        }
+        this.props.login(this.props.params.provider, data);
       } else {
         this.props.getUrlAuth(this.props.params.provider).then(res => window.location = res);
       }
@@ -77,7 +75,7 @@ export default class Login extends Component {
         }
         {auth.user &&
         <div>
-          <p>You are currently logged in as {auth.user.name}.</p>
+          <p>You are currently logged in as {auth.user.username}.</p>
 
           <div>
             <button className="btn btn-danger" onClick={logout}><i className="fa fa-sign-out"/>{' '}Log Out</button>

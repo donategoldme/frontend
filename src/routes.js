@@ -7,6 +7,7 @@ import {
     StandardHome, StandardWidget,
     ChatsWidget, ChatsHome, ChatWidget, ChatsConnect, ChatPrefs,
     PollsWidget,
+    Profile, ProfileHome, ProfilePrefs, ProfileProviders,
   } from 'containers';
 
 export default (store) => {
@@ -62,6 +63,11 @@ export default (store) => {
             <Route path="prefs" component={ChatPrefs}/>
             <Route path="polls" component={PollsWidget}/>
           </Route>
+        </Route>
+        <Route path="profile" component={Profile}>
+          <IndexRoute component={ProfileHome}/>
+          <Route path="prefs" component={ProfilePrefs}/>
+          <Route path="providers" component={ProfileProviders}/>
         </Route>
       </Route>
       { /* Catch all route */ }

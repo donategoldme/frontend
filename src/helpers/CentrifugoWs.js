@@ -6,6 +6,7 @@ import {
 import {addVideoSuccess, viewedVideoSuccess} from 'redux/modules/widgets/youtube';
 import * as standardWidget from 'redux/modules/widgets/standard';
 import * as cgoActions from 'redux/modules/centrifugo';
+import * as auth from 'redux/modules/auth';
 
 function switcher(dispatch, data) {
   console.log(data);
@@ -27,6 +28,9 @@ function switcher(dispatch, data) {
       break;
     case 'save_standard_donate':
       dispatch(standardWidget.viewedDonateWS(data.donate));
+      break;
+    case 'add_provider_auth':
+      dispatch(auth.addProvider(data.provider));
       break;
     default:
       break;

@@ -36,6 +36,7 @@ function loadChatsReducer(state, action) {
         loaded: true,
         results: res.result || [],
         entities: res.entities.chats || {},
+        errors: '',
       };
     case LOAD_CHATS_FAIL:
       return {

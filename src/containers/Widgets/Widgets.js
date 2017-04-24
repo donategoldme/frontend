@@ -11,7 +11,7 @@ export default class Widgets extends Component {
     return (
       <div className={styles.widgets}>
         <Helmet title="Widgets"/>
-        <div className={styles.appContent + ' col-md-10'}>
+        <div className={styles.appContent + ' col-md-12'}>
           {this.props.children}
         </div>
       </div>
