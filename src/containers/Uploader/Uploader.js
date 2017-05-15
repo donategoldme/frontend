@@ -29,6 +29,7 @@ function UploadForm(props) {
   error: state.uploader.error,
   images: state.uploader.images,
   sounds: state.uploader.sounds,
+  saveFunc: state.uploader.saveFunc,
   user: state.auth.user,
   activeTab: state.uploader.activeTab,
 }),
@@ -40,12 +41,15 @@ export default class Uploader extends Component {
     images: PropTypes.array.isRequired,
     sounds: PropTypes.array.isRequired,
     activeTab: PropTypes.number.isRequired,
+    saveFunc: PropTypes.string,
     loadImages: PropTypes.func.isRequired,
     loadSounds: PropTypes.func.isRequired,
     uploadImage: PropTypes.func.isRequired,
     uploadSound: PropTypes.func.isRequired,
     deleteImage: PropTypes.func.isRequired,
-    saveImage: PropTypes.func.isRequired,
+    saveImage: PropTypes.oneOfType([
+      PropTypes.func,
+      PropTypes.object]).isRequired,
     saveSound: PropTypes.func.isRequired,
     deleteSound: PropTypes.func.isRequired,
     dialogOpen: PropTypes.func.isRequired,
@@ -60,7 +64,7 @@ export default class Uploader extends Component {
   render() {
     const {error, images, sounds, user, uploadImage, uploadSound,
       deleteImage, deleteSound, saveImage, saveSound, dialogOpen,
-      activeTab} = this.props;
+      activeTab, saveFunc} = this.props;
     const audios = toAudioObjects(sounds, user.id);
     const delImage = (img) => {
       return () => deleteImage(img);
@@ -69,10 +73,18 @@ export default class Uploader extends Component {
       return () => deleteSound(sound);
     };
     const handleSaveImage = (img) => {
-      return () => {
-        dialogOpen();
-        return saveImage(img);
-      };
+      switch (typeof saveImage) {
+        case 'object':
+          return () => {
+            dialogOpen();
+            return saveImage[saveFunc](img);
+          };
+        default:
+          return () => {
+            dialogOpen();
+            return saveImage(img);
+          };
+      }
     };
     const handlePlaySound = (sound) => {
       return () => {
@@ -102,8 +114,8 @@ export default class Uploader extends Component {
                 </Col>
                 <Col xs={12} md={9}>
                   {
-                    images.map((img) =>
-                      <Col xs={6} md={3}>
+                    images.map((img, index) =>
+                      <Col xs={6} md={3} key={index}>
                         <Image onClick={handleSaveImage(img)} src={`/uploads/${user.id}/pic/${img}`} responsive/>
                         <Button onClick={delImage(img)}>Удалить</Button>
                       </Col>
@@ -119,8 +131,8 @@ export default class Uploader extends Component {
                 </Col>
                 <Col xs={12} md={9} style={{padding: '0 5px'}}>
                     {
-                        sounds.map((sound) =>
-                        <Row style={{padding: '5px 0'}}>
+                        sounds.map((sound, index) =>
+                        <Row style={{padding: '5px 0'}} key={index}>
                           <Col xs={2} md={1}>
                             <Button onClick={handlePlaySound(sound)}><span className="glyphicon glyphicon-play-circle"/></Button>
                           </Col>

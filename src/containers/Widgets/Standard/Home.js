@@ -6,9 +6,9 @@ import {replace} from 'react-router-redux';
   state => ({
     user: state.auth.user,
   }), {replace})
-export default class ChatsWidgets extends PureComponent {
+export default class StandardHome extends PureComponent {
   componentWillMount() {
-    this.props.replace('/widgets/chats/chat');
+    this.props.replace('/widgets/standard/prefs');
   }
   render() {
     // const styles = require('./Widgets.scss');

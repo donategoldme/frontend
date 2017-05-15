@@ -1,7 +1,6 @@
 import React, {PropTypes, PureComponent} from 'react';
 import {connect} from 'react-redux';
 
-
 @connect(
   state => ({
     user: state.auth.user,

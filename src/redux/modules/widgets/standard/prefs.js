@@ -317,7 +317,7 @@ export default function reducer(state = initialState, action = {}) {
 }
 
 export function isLoaded(globalState) {
-  return globalState.standardWidget && globalState.standardWidget.loaded;
+  return globalState.standardWidget.prefs && globalState.standardWidget.prefs.loaded;
 }
 
 export function isLoadedDonates(globalState) {

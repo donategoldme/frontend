@@ -3,8 +3,8 @@ import {IndexRoute, Route} from 'react-router';
 import { isLoaded as isAuthLoaded, load as loadAuth } from 'redux/modules/auth';
 import {
     App, Home, Widgets, Login, NotFound,
-    YoutubeHome, YoutubeWidget,
-    StandardHome, StandardWidget,
+    YoutubeHome, YoutubeWidget, YoutubePrefs,
+    StandardHome, StandardWidget, StandardPrefs, StandardPaypage,
     ChatsWidget, ChatsHome, ChatWidget, ChatsConnect, ChatPrefs,
     PollsWidget,
     Profile, ProfileHome, ProfilePrefs, ProfileProviders,
@@ -20,9 +20,8 @@ export default (store) => {
       }
       cb();
     }
-
     if (!isAuthLoaded(store.getState())) {
-      store.dispatch(loadAuth()).then(checkAuth);
+      store.dispatch(loadAuth()).then(checkAuth, checkAuth);
     } else {
       checkAuth();
     }
@@ -50,11 +49,14 @@ export default (store) => {
       <Route onEnter={requireLogin}>
         <Route path="widgets" component={Widgets}>
           <IndexRoute component={Home}/>
-          <Route path="youtube" component={YoutubeHome}>
-            <IndexRoute component={YoutubeWidget}/>
+          <Route path="youtube" component={YoutubeWidget}>
+            <IndexRoute component={YoutubeHome}/>
+            <Route path="prefs" component={YoutubePrefs}/>
           </Route>
-          <Route path="standard" component={StandardHome}>
-            <IndexRoute component={StandardWidget}/>
+          <Route path="standard" component={StandardWidget}>
+            <IndexRoute component={StandardHome}/>
+            <Route path="prefs" component={StandardPrefs}/>
+            <Route path="paypage" component={StandardPaypage}/>
           </Route>
           <Route path="chats" component={ChatsWidget}>
             <IndexRoute component={ChatsHome}/>

@@ -1,10 +1,10 @@
 import Centrifuge from 'centrifuge';
-import config from '../config';
+// import config from '../config';
 import {
   refreshBalance
 } from 'redux/modules/balance';
 import {addVideoSuccess, viewedVideoSuccess} from 'redux/modules/widgets/youtube';
-import * as standardWidget from 'redux/modules/widgets/standard';
+import * as standardWidget from 'redux/modules/widgets/standard/prefs';
 import * as cgoActions from 'redux/modules/centrifugo';
 import * as auth from 'redux/modules/auth';
 
@@ -41,7 +41,8 @@ export default function getClient(userId, username, timestamp, token) {
   return (dispatch) => {
     dispatch(cgoActions.connecting());
     const cgo = new Centrifuge({
-      url: 'http://' + config.apiHost + ':8000',
+      // url: 'http://' + config.apiHost + ':8000',
+      url: 'http://' + window.location.hostname + ':8000',
       user: `${userId}`,
       timestamp: timestamp,
       info: '',

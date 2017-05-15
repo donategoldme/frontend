@@ -18,6 +18,7 @@ const REMOVE_PROVIDER_FAIL = 'donategold.me/auth/REMOVE_PROVIDER_FAIL';
 const initialState = {
   loaded: false,
   providers: [],
+  // user: {},
 };
 
 function loadReducer(state, action) {

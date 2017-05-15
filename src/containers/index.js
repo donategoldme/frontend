@@ -3,11 +3,15 @@ export Home from './Home/Home';
 
 export Widgets from './Widgets/Widgets';
 
-export YoutubeHome from './Widgets/Youtube/YoutubeHome';
-export YoutubeWidget from './Widgets/Youtube/Youtube';
+export YoutubeHome from './Widgets/Youtube/Home';
+export YoutubeWidget from './Widgets/Youtube/YoutubeWidget';
+export YoutubePrefs from './Widgets/Youtube/Prefs/YoutubePrefs';
 
-export StandardHome from './Widgets/Standard/StandardHome';
-export StandardWidget from './Widgets/Standard/Standard';
+
+export StandardHome from './Widgets/Standard/Home';
+export StandardWidget from './Widgets/Standard/StandardWidget';
+export StandardPrefs from './Widgets/Standard/Prefs/Prefs';
+export StandardPaypage from './Widgets/Standard/Paypage/Paypage';
 
 export ChatsHome from './Widgets/Chats/Home';
 export ChatsWidget from './Widgets/Chats/ChatsWidget';

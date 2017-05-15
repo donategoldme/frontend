@@ -17,6 +17,7 @@ const DELETE_SOUND = 'donategold.me/uploader/DELETE_SOUND';
 const DELETE_SOUND_SUCCESS = 'donategold.me/uploader/DELETE_SOUND_SUCCESS';
 const DELETE_SOUND_FAIL = 'donategold.me/uploader/DELETE_SOUND_FAIL';
 const ACTIVING_TAB = 'donategol.me/uploader/ACTIVING_TAB';
+const SAVE_FUNC_ACTIVE = 'donategold.me/uploader/SAVE_FUNC_ACTIVE';
 
 
 const initialState = {
@@ -169,6 +170,18 @@ function deleteSoundReducer(state, action) {
   }
 }
 
+function saveFuncActiveReducer(state, action) {
+  switch (action.type) {
+    case SAVE_FUNC_ACTIVE:
+      return {
+        ...state,
+        saveFunc: action.saveFunc,
+      };
+    default:
+      return state;
+  }
+}
+
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
     case LOAD_IMAGES:
@@ -195,6 +208,8 @@ export default function reducer(state = initialState, action = {}) {
     case DELETE_SOUND_SUCCESS:
     case DELETE_SOUND_FAIL:
       return deleteSoundReducer(state, action);
+    case SAVE_FUNC_ACTIVE:
+      return saveFuncActiveReducer(state, action);
     case ACTIVING_TAB:
       return {
         ...state,
@@ -259,5 +274,12 @@ export function activingTab(tab) {
   return {
     type: ACTIVING_TAB,
     tab: tab,
+  };
+}
+
+export function saveFuncActive(saveFunc) {
+  return {
+    type: SAVE_FUNC_ACTIVE,
+    saveFunc: saveFunc,
   };
 }

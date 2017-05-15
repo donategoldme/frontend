@@ -8,8 +8,8 @@ import { asyncConnect } from 'redux-async-connect';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 
-import * as widgetActions from 'redux/modules/widgets/standard';
-import {isLoaded, isLoadedDonates, load as loadWidgets, loadDonates} from 'redux/modules/widgets/standard';
+import * as widgetActions from 'redux/modules/widgets/standard/prefs';
+import {isLoaded, isLoadedDonates, load as loadWidgets, loadDonates} from 'redux/modules/widgets/standard/prefs';
 import {NameForm} from 'components/Forms/StandardWF/StandardWF';
 import StandardAddDonateForm from 'components/Forms/StandardWF/StandardAddDonateForm';
 import {activingTab} from 'redux/modules/uploader';
@@ -31,17 +31,17 @@ import ListOfDonates from 'components/ListOfDonates/ListOfDonates';
 }])
 @connect(
   state => ({
-    widgets: state.standardWidget.widgets,
-    results: state.standardWidget.results,
-    error: state.standardWidget.error,
-    dialog: state.standardWidget.dialog,
-    donates: state.standardWidget.donates,
+    widgets: state.standardWidget.prefs.widgets,
+    results: state.standardWidget.prefs.results,
+    error: state.standardWidget.prefs.error,
+    dialog: state.standardWidget.prefs.dialog,
+    donates: state.standardWidget.prefs.donates,
     user: state.auth.user,
-    addDonateForm: state.standardWidget.addDonateForm,
-    listOfDonates: state.standardWidget.listOfDonates,
+    addDonateForm: state.standardWidget.prefs.addDonateForm,
+    listOfDonates: state.standardWidget.prefs.listOfDonates,
   }),
   {...widgetActions, activingTab})
-export default class StandardWidget extends Component {
+export default class StandardPrefs extends Component {
   static propTypes = {
     widgets: PropTypes.object.isRequired,
     results: PropTypes.array.isRequired,
@@ -68,9 +68,10 @@ export default class StandardWidget extends Component {
     const {error, dialog, dialogOpen, createNew, widgets, results, saveWidget,
     editImage, editSound, user, addDonateForm, openAddDonateForm, donates,
     viewedDonate, openListOfDonates, listOfDonates} = this.props;
-    let widgetScreen = '';
+    const widgetScreen = '/screen/chatsWidget?t=' + user.token;
+    let copiyer = '';
     if (__CLIENT__) {
-      widgetScreen = 'http://' + document.location.hostname + '/screen/standardWidget?t=' + user.token;
+      copiyer = 'http://' + document.location.hostname + widgetScreen;
     }
     const styles = require('./standard.scss');
     const handleDelete = (id) => {
@@ -102,18 +103,17 @@ export default class StandardWidget extends Component {
               <h1>
                 Стандартный виджет
               </h1>
-              <Helmet title="Youtube Widgets"/>
+              <Helmet title="Standard Widgets"/>
               <div>
                 <p>Виджет для отображения сбора денег</p>
-                    <div>
-                      <input readOnly value={widgetScreen} />
-                      <Link to={widgetScreen} target="_blank">
-                        <Button>Открыть</Button>
-                      </Link>
-                      <CopyToClipboard text={widgetScreen}>
-                      <Button>Скопировать</Button>
-                      </CopyToClipboard>
-                    </div>
+                <div>
+                  <Link to={widgetScreen} target="_blank">
+                    <Button>Открыть</Button>
+                  </Link>
+                  <CopyToClipboard text={copiyer}>
+                    <Button>Скопировать</Button>
+                  </CopyToClipboard>
+                </div>
               </div>
               {error &&
                 <div className="alert alert-danger" role="alert">

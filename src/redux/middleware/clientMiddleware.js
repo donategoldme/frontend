@@ -15,7 +15,8 @@ export default function clientMiddleware(client) {
       }
       const [REQUEST, SUCCESS, FAILURE] = types;
       next({...rest, type: REQUEST});
-      if (client.TOKEN === '' && getState().auth.user !== undefined && getState().auth.user !== null) {
+      if (client.TOKEN === '' && getState().auth.user !== undefined &&
+      getState().auth.user !== null && getState().auth.user.token !== undefined) {
         client.TOKEN = getState().auth.user.token;
       }
        // initial token for header
@@ -28,9 +29,10 @@ export default function clientMiddleware(client) {
           next({...rest, result, type: SUCCESS});
         },
         (error) => {
+          console.error('MIDDLEWARE ERROR1:', error);
           next({...rest, error, type: FAILURE});
         }).catch((error)=> {
-          console.error('MIDDLEWARE ERROR:', error);
+          console.error('MIDDLEWARE ERROR2:', error);
           next({...rest, error, type: FAILURE});
         });
       return actionPromise;

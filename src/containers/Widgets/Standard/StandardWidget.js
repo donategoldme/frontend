@@ -5,7 +5,7 @@ import Nav from 'react-bootstrap/lib/Nav';
 import NavItem from 'react-bootstrap/lib/NavItem';
 
 
-export default class YoutubedHome extends Component {
+export default class StandardWidget extends Component {
   static propTypes = {
     children: PropTypes.object.isRequired,
   };
@@ -14,8 +14,11 @@ export default class YoutubedHome extends Component {
     return (
       <div>
         <Nav bsStyle="pills" stacked activeKey={1} className={'col-md-2'}>
-          <LinkContainer to="/widgets/youtube">
-            <NavItem>YoutubeDJ</NavItem>
+          <LinkContainer to="/widgets/standard/prefs">
+            <NavItem>Настройки</NavItem>
+          </LinkContainer>
+          <LinkContainer to="/widgets/standard/paypage">
+            <NavItem>Страница оплаты</NavItem>
           </LinkContainer>
         </Nav>
         <Helmet title="Чаты"/>

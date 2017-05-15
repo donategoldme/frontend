@@ -20,6 +20,8 @@ export function UploaderModal(props) {
 UploaderModal.propTypes = {
   dialog: PropTypes.bool.isRequired,
   dialogOpen: PropTypes.func.isRequired,
-  saveImage: PropTypes.func.isRequired,
+  saveImage: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.object]).isRequired,
   saveSound: PropTypes.func.isRequired,
 };

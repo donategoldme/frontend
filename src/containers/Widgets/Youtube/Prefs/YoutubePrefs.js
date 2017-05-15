@@ -79,9 +79,10 @@ export default class YoutubeWidget extends Component {
     };
     const {widgets, error, editing, editStop, dialog, deleting, addVideoDialog, user} = this.props;
     const styles = require('./youtube.scss');
-    let widgetScreen = '';
+    const widgetScreen = '/screen/chatsWidget?t=' + user.token;
+    let copiyer = '';
     if (__CLIENT__) {
-      widgetScreen = 'http://' + document.location.hostname + '/screen/youtubeWidget?t=' + user.token;
+      copiyer = 'http://' + document.location.hostname + widgetScreen;
     }
     return (
       <Row className={styles.widgets}>
@@ -94,18 +95,14 @@ export default class YoutubeWidget extends Component {
         <p>
           Виджет для создания плейлиста с помощью пользователей.
         </p>
-        {
-                  __CLIENT__ &&
-                    <div>
-                      <input readOnly value={widgetScreen} />
-                      <Link to={widgetScreen} target="_blank">
-                        <Button>Открыть</Button>
-                      </Link>
-                      <CopyToClipboard text={widgetScreen}>
-                      <Button>Скопировать</Button>
-                      </CopyToClipboard>
-                    </div>
-                }
+        <div>
+          <Link to={widgetScreen} target="_blank">
+            <Button>Открыть</Button>
+          </Link>
+          <CopyToClipboard text={copiyer}>
+            <Button>Скопировать</Button>
+          </CopyToClipboard>
+        </div>
         {error &&
         <div className="alert alert-danger" role="alert">
           <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
