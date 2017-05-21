@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import Helmet from 'react-helmet';
+import {Col} from 'react-bootstrap';
 
 
 export default class Widgets extends Component {
@@ -11,9 +12,9 @@ export default class Widgets extends Component {
     return (
       <div className={styles.widgets}>
         <Helmet title="Widgets"/>
-        <div className={styles.appContent + ' col-md-12'}>
+        <Col xs={12} md={12}>
           {this.props.children}
-        </div>
+        </Col>
       </div>
     );
   }

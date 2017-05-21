@@ -1,0 +1,47 @@
+.containerDonatePage {
+    position: fixed;
+}
+
+.imgContainer {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.toCenter {
+  float: initial;
+  margin-left: auto;
+  margin-right: auto;
+  height: 100%;
+  max-width: 600px;
+}
+
+.header {
+  min-height: 200px;
+  position: relative;
+  background-size: cover;
+  height: 20%;
+}
+
+.headerTitle {
+  background-color: rgba(0,0,0,0.4);
+  border-top: 1px solid hsla(0,0%,100%,.2);
+}
+
+.headerChans {
+  text-align: right;
+  p {
+    margin: 0;
+  }
+}
+.mainWind {
+  min-height: 400px;
+  background-color: #fff;
+}
+
+.bottomed {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  float: left;
+}

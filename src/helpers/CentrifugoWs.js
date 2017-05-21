@@ -7,6 +7,7 @@ import {addVideoSuccess, viewedVideoSuccess} from 'redux/modules/widgets/youtube
 import * as standardWidget from 'redux/modules/widgets/standard/prefs';
 import * as cgoActions from 'redux/modules/centrifugo';
 import * as auth from 'redux/modules/auth';
+import * as paypage from 'redux/modules/widgets/standard/paypage';
 
 function switcher(dispatch, data) {
   console.log(data);
@@ -31,6 +32,9 @@ function switcher(dispatch, data) {
       break;
     case 'add_provider_auth':
       dispatch(auth.addProvider(data.provider));
+      break;
+    case 'paypage_save':
+      dispatch(paypage.savePaypageWS(data.paypage));
       break;
     default:
       break;

@@ -3,6 +3,14 @@
  *
  */
 
+ html, body {
+   height: 100%;
+ }
+
+#content {
+   height: 100%;
+ }
+
 .navbar-brand {
   position: relative;
   padding-left: 50px;

@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
-import {FormGroup, Button, ControlLabel, Form, Row, Col, Thumbnail} from 'react-bootstrap';
-import { SketchPicker } from 'react-color';
+import {Button, Form} from 'react-bootstrap';
 import {UploaderModal} from 'containers/Uploader/modal';
+import {FieldGroup, ImgGroup, FontGroup, ColorGroup} from 'components/Forms/utils';
 
 
 export class PaypageForm extends React.PureComponent {
@@ -13,37 +13,7 @@ export class PaypageForm extends React.PureComponent {
   }
 
   savePaypage() {
-    // const {paypage} = this.props;
-    // paypage.name = name.value;
-    // // paypage.active = active.value;
-
-    // paypage.header_title = headerTitle.value;
-    // paypage.header_desc = headerDesc.value;
-    // paypage.header_chans = headerChans.value;
-    // paypage.header_text_color = headerTextColor.value;
-    // // paypage.header_color = headerColor.value;
-    // // paypage.header_img = headerImg.value;
-    // // paypage.header_font = headerFont.value;
-
-    // // paypage.background_color = backgroundColor.value;
-    // // paypage.background_img = backgroundImg.value;
-
-    // // paypage.main_title = mainTitle.value;
-    // // paypage.main_title_color = mainTitleColor.value;
-    // // paypage.main_desc = mainDesc.value;
-    // // paypage.main_desc_color = mainDescColor.value;
-    // // paypage.main_font = mainFont.value;
-
-    // // paypage.button_collor = buttonCollor.value;
-    // // paypage.button_text = buttonText.value;
-    console.log(this.state);
     return this.props.savePaypage(this.state);
-  }
-  saveHeaderImage(img) {
-    this.setState({header_img: img});
-  }
-  deleteHeaderImage() {
-    this.setState({headerImg: ''});
   }
 
   handleOpen(saveFunc) {
@@ -53,64 +23,37 @@ export class PaypageForm extends React.PureComponent {
       return this.props.uploaderFormMng();
     };
   }
-  // const {saveFuncActive} = props;
   render() {
-    const saversImages = {header: this.saveHeaderImage.bind(this)};
+    const saversImages = {
+      header: (img) => this.setState({header_img: img}),
+      background_img: (img) => this.setState({background_img: img}),
+    };
     return (
         <Form>
           {this.props.uploaderForm && <UploaderModal saveImage={saversImages} saveSound={() => {}} dialog={this.props.uploaderForm} dialogOpen={this.props.uploaderFormMng}/>}
-          <FormGroup>
-            <ControlLabel>
-              Название:
-            </ControlLabel>
-            <input type="text" className="form-control" defaultValue={this.state.name} onChange={(input) => this.setState({name: input.target.value})} />
-          </FormGroup>
-          {
-            // <FormGroup>
-          //   <ControlLabel>
-          //     Заголовок шапки:
-          //   </ControlLabel>
-          //   <input type="text" className="form-control" defaultValue={this.props.paypage.header_title} ref={(input) => headerTitle = input} />
-          // </FormGroup>
-          // <FormGroup>
-          //   <ControlLabel>
-          //     Описание шапки:
-          //   </ControlLabel>
-          //   <input type="text" className="form-control" defaultValue={this.props.paypage.header_desc} ref={(input) => headerDesc = input} />
-          // </FormGroup>
-          // <FormGroup>
-          //   <ControlLabel>
-          //     Ссылки в шапки:
-          //   </ControlLabel>
-          //   <input type="text" className="form-control" defaultValue={this.props.paypage.chans} ref={(input) => headerChans = input} />
-          //   <HelpBlock>
-          //     ссылки разделённые ";"
-          //   </HelpBlock>
-          // </FormGroup>
-          }
-          <FormGroup>
-            <ControlLabel>
-              Цвет текста в шапке:
-            </ControlLabel>
-            <SketchPicker
-              color={JSON.parse(this.state.header_text_color || '{}')}
-              onChangeComplete={ ({rgb}) => this.setState({header_text_color: JSON.stringify(rgb)})}
-            />
-          </FormGroup>
-          <Row>
-            <Col xs={12} md={12}>
-              <ControlLabel>
-                Изображение фона шапки:
-              </ControlLabel>
-            </Col>
-            <Col xs={12} md={2}>
-              <Thumbnail onClick={this.handleOpen('header')} src={this.state.header_img ? `/uploads/${this.props.userId}/pic/${this.state.header_img}` : '/uploads/default.png'} responsive>
-              <p>{this.state.header_img}</p>
-              </Thumbnail>
-            </Col>
-            <Button onClick={() => this.setState({header_img: ''})}>Убрать</Button>
-          </Row>
+          <FieldGroup id="name" type="text" label="Название" placeholder="Название" defaultValue={this.state.name} onChange={(input) => this.setState({name: input.target.value})}/>
+          {/* header prefs*/}
+          <FieldGroup id="header_title" type="text" label="Заголовок шапки" placeholder="Заголовок шапки" defaultValue={this.state.header_title} onChange={(input) => this.setState({header_title: input.target.value})}/>
+          <FieldGroup id="header_desc" type="text" label="Описание шапки" placeholder="Описание шапки" defaultValue={this.state.header_desc} onChange={(input) => this.setState({header_desc: input.target.value})}/>
+          <FieldGroup id="header_chans" type="text" help="ссылки разделённые ';'" label="Ссылки в шапки" placeholder="Ссылки в шапки" defaultValue={this.state.header_chans} onChange={(input) => this.setState({header_chans: input.target.value})}/>
+          <ColorGroup id="header_text_color" label="Цвет текста в шапке" color={this.state.header_text_color} onChange={({rgb}) => this.setState({header_text_color: JSON.stringify(rgb)})}/>
+          <ImgGroup label="Картинка шапки" img={this.state.header_img} onChange={this.handleOpen('header')} onDelete={() => this.setState({header_img: ''})} userId={this.props.userId}/>
+          <ColorGroup id="header_color" label="Цвет шапки" color={this.state.header_color} onChange={({rgb}) => this.setState({header_color: JSON.stringify(rgb)})}/>
+          <FontGroup id="header_font" label="Шрифт" placeholder="Шрифт" defaultValue={this.state.header_font} onChange={(input) => this.setState({header_font: input.target.value})}/>
+          {/* backgroud prefs*/}
+          <ColorGroup id="background_color" label="Фон" color={this.state.background_color} onChange={({rgb}) => this.setState({background_color: JSON.stringify(rgb)})}/>
+          <ImgGroup label="Изображение фона" img={this.state.background_img} onChange={this.handleOpen('background_img')} onDelete={() => this.setState({backgroud_img: ''})} userId={this.props.userId}/>
+          {/* main prefs*/}
+          <FieldGroup id="main_title" type="text" label="Заголовок главного окна" placeholder="Заголовок главного окна" defaultValue={this.state.main_title} onChange={(input) => this.setState({main_title: input.target.value})}/>
+          <ColorGroup id="main_title_color" label="Цвет заголовка главного окна" color={this.state.main_title_color} onChange={({rgb}) => this.setState({main_title_color: JSON.stringify(rgb)})}/>
+          <FieldGroup id="main_desc" type="text" label="Описание главного окна" placeholder="Описание главного окна" defaultValue={this.state.main_desc} onChange={(input) => this.setState({main_desc: input.target.value})}/>
+          <ColorGroup id="main_desc_color" label="Цвет текста главного окна" color={this.state.main_desc_color} onChange={({rgb}) => this.setState({main_desc_color: JSON.stringify(rgb)})}/>
+          <FontGroup id="main_font" label="Шрифт главного окна" placeholder="Шрифт главного окна" defaultValue={this.state.main_font} onChange={(input) => this.setState({main_font: input.target.value})}/>
+          {/* button prefs*/}
+          <ColorGroup id="button_collor" label="Цвет кнопки оплаты" color={this.state.button_color} onChange={({rgb}) => this.setState({button_color: JSON.stringify(rgb)})}/>
+          <FieldGroup id="button_text" type="text" label="Текст кнопки оплаты" placeholder="Текст кнопки оплаты" defaultValue={this.state.button_text} onChange={(input) => this.setState({button_text: input.target.value})}/>
           <Button onClick={this.savePaypage}>Save</Button>
+          <Button onClick={this.props.cancel}>Отмена</Button>
         </Form>
     );
   }
@@ -120,10 +63,9 @@ PaypageForm.propTypes = {
   paypage: PropTypes.object.isRequired,
   savePaypage: PropTypes.func.isRequired,
   saveFuncActive: PropTypes.func.isRequired,
-  // editImage: PropTypes.func.isRequired,
-  // editSound: PropTypes.func.isRequired,
   activingTab: PropTypes.func.isRequired,
   uploaderFormMng: PropTypes.func.isRequired,
+  cancel: PropTypes.func.isRequired,
   uploaderForm: PropTypes.bool.isRequired,
   userId: PropTypes.number.isRequired,
 };

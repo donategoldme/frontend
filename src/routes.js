@@ -8,6 +8,7 @@ import {
     ChatsWidget, ChatsHome, ChatWidget, ChatsConnect, ChatPrefs,
     PollsWidget,
     Profile, ProfileHome, ProfilePrefs, ProfileProviders,
+    StandardDonatePage,
   } from 'containers';
 
 export default (store) => {
@@ -46,6 +47,7 @@ export default (store) => {
       <Route path="pagination" component={Pagination}/>
       <Route path="survey" component={Survey}/>*/}
       <Route path="auth/:provider/callback" component={Login}/>
+      <Route path="s/:username" component={StandardDonatePage}/>
       <Route onEnter={requireLogin}>
         <Route path="widgets" component={Widgets}>
           <IndexRoute component={Home}/>

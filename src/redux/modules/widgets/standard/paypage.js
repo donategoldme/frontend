@@ -66,6 +66,9 @@ function savePaypageReducer(state, action) {
       };
     case SAVE_PAYPAGE_SUCCESS:
       const paypages = {...state.paypages};
+      if (action.result.active) {
+        state.results.map((id) => paypages[id].active = false);
+      }
       paypages[action.result.id] = action.result;
       const results = state.results.indexOf(action.result.id) === -1 ? [...state.results, action.result.id] : [...state.results];
       return {
@@ -191,6 +194,13 @@ export function uploaderFormMng() {
   };
 }
 
+export function savePaypageWS(paypage) {
+  return {
+    type: SAVE_PAYPAGE_SUCCESS,
+    result: paypage,
+  };
+}
+
 export function savePaypage(paypage) {
   let url = '/widgets/standard/paypage/';
   if (paypage.id !== undefined && paypage.id > 0) {
@@ -199,6 +209,14 @@ export function savePaypage(paypage) {
   return {
     types: [SAVE_PAYPAGE, SAVE_PAYPAGE_SUCCESS, SAVE_PAYPAGE_FAIL],
     promise: (client) => client.post(url, {data: paypage})
+  };
+}
+
+export function activatePaypage(paypage) {
+  paypage.active = true;
+  return {
+    types: [SAVE_PAYPAGE, SAVE_PAYPAGE_SUCCESS, SAVE_PAYPAGE_FAIL],
+    promise: (client) => client.post('/widgets/standard/paypage/' + paypage.id, {data: paypage})
   };
 }
 

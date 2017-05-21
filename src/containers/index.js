@@ -1,6 +1,7 @@
 export App from './App/App';
 export Home from './Home/Home';
 
+// widjets
 export Widgets from './Widgets/Widgets';
 
 export YoutubeHome from './Widgets/Youtube/Home';
@@ -11,6 +12,7 @@ export YoutubePrefs from './Widgets/Youtube/Prefs/YoutubePrefs';
 export StandardHome from './Widgets/Standard/Home';
 export StandardWidget from './Widgets/Standard/StandardWidget';
 export StandardPrefs from './Widgets/Standard/Prefs/Prefs';
+
 export StandardPaypage from './Widgets/Standard/Paypage/Paypage';
 
 export ChatsHome from './Widgets/Chats/Home';
@@ -24,6 +26,9 @@ export Profile from './Profile/Profile';
 export ProfileHome from './Profile/Home';
 export ProfilePrefs from './Profile/Prefs/Prefs';
 export ProfileProviders from './Profile/Providers/Providers';
+
+// paypages
+export StandardDonatePage from './DonatePage/Standard/Standard';
 
 export Login from './Login/Login';
 

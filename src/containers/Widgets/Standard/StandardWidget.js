@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import Helmet from 'react-helmet';
 import { LinkContainer } from 'react-router-bootstrap';
+import {Row, Col} from 'react-bootstrap';
 import Nav from 'react-bootstrap/lib/Nav';
 import NavItem from 'react-bootstrap/lib/NavItem';
 
@@ -12,7 +13,7 @@ export default class StandardWidget extends Component {
   render() {
     // const styles = require('./Widgets.scss');
     return (
-      <div>
+      <Row>
         <Nav bsStyle="pills" stacked activeKey={1} className={'col-md-2'}>
           <LinkContainer to="/widgets/standard/prefs">
             <NavItem>Настройки</NavItem>
@@ -22,10 +23,10 @@ export default class StandardWidget extends Component {
           </LinkContainer>
         </Nav>
         <Helmet title="Чаты"/>
-        <div className={'col-md-10'}>
+        <Col xs={10} md={10}>
           {this.props.children}
-        </div>
-      </div>
+        </Col>
+      </Row>
     );
   }
 }

@@ -2,9 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { IndexLink } from 'react-router';
 import { LinkContainer } from 'react-router-bootstrap';
-import Navbar from 'react-bootstrap/lib/Navbar';
-import Nav from 'react-bootstrap/lib/Nav';
-import NavItem from 'react-bootstrap/lib/NavItem';
+import {Col, Nav, Navbar, NavItem} from 'react-bootstrap';
 import Helmet from 'react-helmet';
 
 import { isLoaded as isAuthLoaded, load as loadAuth, logout } from 'redux/modules/auth';
@@ -83,7 +81,7 @@ export default class App extends Component {
     const {user, balance} = this.props;
     const styles = require('./App.scss');
     return (
-      <div className={styles.app}>
+      <div>
         <Helmet {...config.app.head}/>
         <Navbar fixedTop>
           <Navbar.Header>
@@ -139,9 +137,10 @@ export default class App extends Component {
             <UserInfo user={user} balance={balance}/>
           </Navbar.Collapse>
         </Navbar>
-
         <div className={styles.appContent}>
+          <Col xs={12} md={12}>
           {this.props.children}
+          </Col>
         </div>
       </div>
     );

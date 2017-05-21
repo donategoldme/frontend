@@ -2,12 +2,15 @@ import React, {Component, PropTypes} from 'react';
 import Helmet from 'react-helmet';
 import {connect} from 'react-redux';
 import { asyncConnect } from 'redux-async-connect';
+import { Link } from 'react-router';
 import {Well, Row, Col, Button} from 'react-bootstrap';
 
 import {PaypageForm} from 'components/Forms/StandardWF/Paypage';
 import {activingTab, saveFuncActive as sfa} from 'redux/modules/uploader';
 import {isLoaded, loadPaypages} from 'redux/modules/widgets/standard/paypage';
 import * as widgetActions from 'redux/modules/widgets/standard/paypage';
+
+const styles = require('./paypages.scss');
 
 @asyncConnect([{
   deferred: true,
@@ -37,6 +40,7 @@ export default class StandardPaypage extends Component {
     openForm: PropTypes.bool.isRequired,
     saveFuncActive: PropTypes.func.isRequired,
     savePaypage: PropTypes.func.isRequired,
+    activatePaypage: PropTypes.func.isRequired,
     editPaypage: PropTypes.func.isRequired,
     uploaderFormMng: PropTypes.func.isRequired,
     openFormMng: PropTypes.func.isRequired,
@@ -50,9 +54,18 @@ export default class StandardPaypage extends Component {
     const editPaypage = (id) => {
       return () => this.props.editPaypage(id);
     };
+    const activatePaypage = (paypage) => {
+      return () => this.props.activatePaypage(paypage);
+    };
+    const saveNewPaypage = (paypage) => {
+      savePaypage(paypage);
+      openFormMng();
+    };
     return (
       <div>
         <Helmet title="Страница оплаты"/>
+        <Link to={'/s/' + this.props.user.username} target="_blank">Открыть страницу доната</Link>
+        <Link to={'/s/' + this.props.user.username}>Открыть страницу доната</Link>
         {error &&
         <div className="alert alert-danger" role="alert">
           <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -62,21 +75,31 @@ export default class StandardPaypage extends Component {
         }
         <Row>
           <Col md={12} xs={12}>
-            <Button onClick={openFormMng}>Новая надстройка</Button>
-            {openForm && <PaypageForm paypage={{}} savePaypage={savePaypage}
+            {openForm ? <PaypageForm paypage={{}} savePaypage={saveNewPaypage}
                 saveFuncActive={saveFuncActive} activingTab={activingTab} userId={user.id}
-                uploaderForm={uploaderForm} uploaderFormMng={uploaderFormMng}/>}
+                uploaderForm={uploaderForm} uploaderFormMng={uploaderFormMng} cancel={openFormMng}/>
+              :
+            <Button onClick={openFormMng}>Новая надстройка</Button>
+          }
           </Col>
         </Row>
         <Row>
           <Col md={12} xs={12}>
             {
               results.map((id) =>
-              <Well key={id}>
-              {paypages[id].edit && <PaypageForm paypage={paypages[id]} savePaypage={savePaypage}
-              saveFuncActive={saveFuncActive} activingTab={activingTab} userId={user.id}
-              uploaderForm={uploaderForm} uploaderFormMng={uploaderFormMng}/>}
-              <Button onClick={editPaypage(id)}>edit</Button>
+              <Well key={id} className={paypages[id].active ? styles.active : 'nope'}>
+                {paypages[id].edit
+                ?
+                  <PaypageForm paypage={paypages[id]} savePaypage={savePaypage}
+                  saveFuncActive={saveFuncActive} activingTab={activingTab} userId={user.id}
+                  uploaderForm={uploaderForm} uploaderFormMng={uploaderFormMng} cancel={editPaypage(id)}/>
+                :
+                <Row>
+                  <div>{paypages[id].name}</div>
+                  <Button onClick={editPaypage(id)}>Редактировать</Button>
+                  <Button onClick={activatePaypage(paypages[id])}>Активировать</Button>
+                </Row>
+                }
               </Well>
               )
             }
