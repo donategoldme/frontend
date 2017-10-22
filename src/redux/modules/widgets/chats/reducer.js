@@ -28,6 +28,8 @@ export default function reducer(state = initialValues, action = {}) {
     case chats.REMOVE_CHAT_FAIL:
     case chats.OPEN_CHAT_FORM:
     case chats.ADD_MESSAGE:
+    case chats.DELETE_MESSAGE:
+    case chats.HIDE_MESSAGE:
     case chats.SCROLLING_CHAT:
     case chats.SAVE_PREFS:
     case chats.SAVE_PREFS_SUCCESS:
@@ -35,6 +37,9 @@ export default function reducer(state = initialValues, action = {}) {
     case chats.LOAD_PREFS:
     case chats.LOAD_PREFS_SUCCESS:
     case chats.LOAD_PREFS_FAIL:
+    case chats.BAN_USER:
+    case chats.BAN_USER_SUCCESS:
+    case chats.BAN_USER_FAIL:
       return chats.reducer(state, action);
     case actions.GET_POLL:
     case actions.GET_POLL_SUCCESS:

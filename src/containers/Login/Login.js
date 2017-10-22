@@ -4,16 +4,9 @@ import Helmet from 'react-helmet';
 import { push } from 'react-router-redux';
 import * as authActions from 'redux/modules/auth';
 
-function getDataTwitch(query) {
+function getData(query) {
   if (!!query.code) {
     return {'code': query.code, 'scope': query.scope, 'state': query.state};
-  }
-  return undefined;
-}
-
-function getDataGoogle(query) {
-  if (!!query.code) {
-    return {'code': query.code, 'state': query.state};
   }
   return undefined;
 }
@@ -36,16 +29,7 @@ export default class Login extends Component {
   componentWillMount() {
     if (__CLIENT__) {
       let data = undefined;
-      switch (this.props.params.provider) {
-        case 'twitch':
-          data = getDataTwitch(this.props.location.query);
-          break;
-        case 'gplus':
-          data = getDataGoogle(this.props.location.query);
-          break;
-        default:
-          data = undefined;
-      }
+      data = getData(this.props.location.query);
       if (!!data) {
         this.props.login(this.props.params.provider, data);
       } else {

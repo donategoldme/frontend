@@ -13,8 +13,8 @@ export class ProvidersConnect extends PureComponent {
       <div className={'col-md-12'}>
         <Button onClick={clientOnly('/auth/twitch/callback')}>Twitch</Button>
         <Button onClick={clientOnly('/auth/gplus/callback')}>Youtube</Button>
-        <Button disabled>Goodgame</Button>
-        <Button disabled>Peka2tv</Button>
+        <Button onClick={clientOnly('/auth/peka2tv/callback')}>Peka2tv</Button>
+        <Button onClick={clientOnly('/auth/goodgame/callback')}>Goodgame</Button>
       </div>
     );
   }

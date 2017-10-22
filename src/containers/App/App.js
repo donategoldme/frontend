@@ -126,6 +126,14 @@ export default class App extends Component {
               <LinkContainer to="/auth/gplus/callback">
               <NavItem>Youtube</NavItem>
               </LinkContainer>}
+              {!user &&
+              <LinkContainer to="/auth/peka2tv/callback">
+              <NavItem>Peka2TV</NavItem>
+              </LinkContainer>}
+              {!user &&
+              <LinkContainer to="/auth/goodgame/callback">
+              <NavItem>Goodgame</NavItem>
+              </LinkContainer>}
 
               {user &&
               <LinkContainer to="/logout">

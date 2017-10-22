@@ -16,28 +16,19 @@ function checkerConnect(providers, results, chats) {
   providers.forEach((provider) => {
     let toPush = true;
     results.forEach((id) => {
-      if (provider.uid === chats[id].channel_id) {
+      if (provider.uid === chats[id].channel_id || provider.uid === chats[id].slug) {
         if (provider.type_provider === chats[id].type ||
          (provider.type_provider === 'gplus' && chats[id].type === 'youtube')) {
           toPush = false;
         }
       }
     });
-    // Object.keys(chats).map((key) => {
-    //   if (provider.uid === chats[key].channel_id) {
-    //     if (provider.type_provider === chats[key].type ||
-    //      (provider.type_provider === 'gplus' && chats[key].type === 'youtube')) {
-    //       toPush = false;
-    //     }
-    //   }
-    // });
     if (toPush) {
       checked.push(provider);
     }
   });
   return checked;
 }
-
 
 @asyncConnect([{
   deferred: true,
@@ -85,7 +76,7 @@ export default class ChatsConnect extends Component {
       };
     };
     const connecters = checkerConnect(this.props.providers, this.props.results, this.props.entities);
-    const connecting = (provider) => () => this.props.addChat({url: channelUrl(provider.type_provider, provider.uid)});
+    const connecting = (provider) => () => this.props.addChat({url: channelUrl(provider.type_provider, {uid: provider.uid})});
     return (
           <div>
             <Helmet title={'Chats'}/>
@@ -108,9 +99,9 @@ export default class ChatsConnect extends Component {
                 connecters.map((provider) =>
                 <Well key={provider.id}>
                   <Row>
-                    <Col xs={1} md={1}><img src={providerIco(provider.type_provider)}/></Col>
+                    <Col xs={1} md={1}><img src={providerIco(provider.type_provider)} style={{width: 16, height: 16}}/></Col>
                     <Col xs={9} md={9}>
-                      <a href={channelUrl(provider.type_provider, provider.uid)} target="_blank">
+                      <a href={channelUrl(provider.type_provider, {uid: provider.uid, slug: provider.slug})} target="_blank">
                         {provider.uid}
                       </a>
                     </Col>
@@ -129,9 +120,9 @@ export default class ChatsConnect extends Component {
                 results.map((id) =>
                 <Well key={id}>
                   <Row>
-                    <Col md={1} xs={1}><img src={providerIco(entities[id].type)}/></Col>
+                    <Col md={1} xs={1}><img src={providerIco(entities[id].type)} style={{width: 16, height: 16}}/></Col>
                     <Col md={9} xs={9}>
-                      <a href={channelUrl(entities[id].type, entities[id].channel_id)} target="_blank">
+                      <a href={channelUrl(entities[id].type, {uid: entities[id].channel_id, slug: entities[id].slug})} target="_blank">
                       {entities[id].channel_id}
                       {entities[id].slug !== entities[id].channel_id && '(' + entities[id].slug + ')'}
                       </a>
