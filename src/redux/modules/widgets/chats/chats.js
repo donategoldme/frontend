@@ -16,6 +16,8 @@ export const REMOVE_CHAT_SUCCESS = 'donategold.me/chats/REMOVE_CHAT_SUCCESS';
 export const REMOVE_CHAT_FAIL = 'donategold.me/chats/REMOVE_CHAT_FAIL';
 export const OPEN_CHAT_FORM = 'donategold.me/chats/OPEN_CHAT_FORM';
 export const ADD_MESSAGE = 'donategold.me/chats/ADD_MESSAGE';
+export const DELETE_MESSAGE = 'donategold.me/chats/DELETE_MESSAGE';
+export const HIDE_MESSAGE = 'donategold.me/chats/HIDE_MESSAGE';
 export const SCROLLING_CHAT = 'donategold.me/chats/SCROLLING_CHAT';
 export const LOAD_PREFS = 'donategold.me/chats/LOAD_PREFS';
 export const LOAD_PREFS_SUCCESS = 'donategold.me/chats/LOAD_PREFS_SUCCESS';
@@ -23,6 +25,12 @@ export const LOAD_PREFS_FAIL = 'donategold.me/chats/LOAD_PREFS_FAIL';
 export const SAVE_PREFS = 'donategold.me/chats/SAVE_PREFS';
 export const SAVE_PREFS_SUCCESS = 'donategold.me/chats/SAVE_PREFS_SUCCESS';
 export const SAVE_PREFS_FAIL = 'donategold.me/chats/SAVE_PREFS_FAIL';
+export const BAN_USER = 'donategold.me/chats/BAN_USER';
+export const BAN_USER_SUCCESS = 'donategold.me/chats/BAN_USER_SUCCESS';
+export const BAN_USER_FAIL = 'donategold.me/chats/BAN_USER_FAIL';
+export const SEND_MESSAGE = 'donategold.me/chats/SEND_MESSAGE';
+export const SEND_MESSAGE_SUCCESS = 'donategold.me/chats/SEND_MESSAGE_SUCCESS';
+export const SEND_MESSAGE_FAIL = 'donategold.me/chats/SEND_MESSAGE_FAIL';
 
 
 function loadChatsReducer(state, action) {
@@ -104,7 +112,18 @@ function openReducer(state, action) {
   }
 }
 
-function addMessageReducer(state, action) {
+function messageDelete(message) {
+  message.deleted = true;
+  message.hide = true;
+  return message;
+}
+
+function messageHide(message) {
+  message.hide = !message.hide;
+  return message;
+}
+
+function messageReducer(state, action) {
   switch (action.type) {
     case ADD_MESSAGE:
       let messages = [];
@@ -116,6 +135,22 @@ function addMessageReducer(state, action) {
       return {
         ...state,
         messages: messages,
+      };
+    case DELETE_MESSAGE:
+      const messagesDeleted = state.messages.map((message) => {
+        if (message.uid === action.message.uid && message.chat_name === action.message.chat_name) {
+          return messageDelete(message);
+        }
+        return message;
+      });
+      return {
+        ...state,
+        messages: messagesDeleted,
+      };
+    case HIDE_MESSAGE:
+      return {
+        ...state,
+        messages: state.messages.map((message) => message.uid === action.message.uid ? messageHide(message) : message),
       };
     default:
       return state;
@@ -187,6 +222,41 @@ function prefsReducer(state, action) {
   }
 }
 
+function banUserReducer(state, action) {
+  switch (action.type) {
+    case BAN_USER:
+      return state;
+    case BAN_USER_SUCCESS:
+      return state;
+    case BAN_USER_FAIL:
+      return {
+        ...state,
+        error: action.error,
+      };
+    default:
+      return state;
+  }
+}
+
+function sendMessageReducer(state, action) {
+  switch (action.type) {
+    case SEND_MESSAGE:
+      return state;
+    case SEND_MESSAGE_SUCCESS:
+      return {
+        ...state,
+        error: '',
+      };
+    case SEND_MESSAGE_FAIL:
+      return {
+        ...state,
+        error: action.error,
+      };
+    default:
+      return state;
+  }
+}
+
 export function reducer(state, action) {
   switch (action.type) {
     case LOAD_CHATS:
@@ -204,7 +274,9 @@ export function reducer(state, action) {
     case OPEN_CHAT_FORM:
       return openReducer(state, action);
     case ADD_MESSAGE:
-      return addMessageReducer(state, action);
+    case DELETE_MESSAGE:
+    case HIDE_MESSAGE:
+      return messageReducer(state, action);
     case SCROLLING_CHAT:
       return scrollingReducer(state, action);
     case SAVE_PREFS:
@@ -214,6 +286,14 @@ export function reducer(state, action) {
     case LOAD_PREFS_SUCCESS:
     case LOAD_PREFS_FAIL:
       return prefsReducer(state, action);
+    case BAN_USER:
+    case BAN_USER_SUCCESS:
+    case BAN_USER_FAIL:
+      return banUserReducer(state, action);
+    case SEND_MESSAGE:
+    case SEND_MESSAGE_SUCCESS:
+    case SEND_MESSAGE_FAIL:
+      return sendMessageReducer(state, action);
     default:
       return state;
   }
@@ -262,6 +342,20 @@ export function addMessage(message) {
   };
 }
 
+export function deleteMessage(message) {
+  return {
+    type: DELETE_MESSAGE,
+    message: message,
+  };
+}
+
+export function hideMessage(message) {
+  return {
+    type: HIDE_MESSAGE,
+    message: message,
+  };
+}
+
 export function scrollingChat(scrollChat) {
   return {
     type: SCROLLING_CHAT,
@@ -280,5 +374,19 @@ export function savePrefs(pref) {
   return {
     types: [SAVE_PREFS, SAVE_PREFS_SUCCESS, SAVE_PREFS_FAIL],
     promise: (client) => client.post('/widgets/chats/pref', {data: pref})
+  };
+}
+
+export function banUser(user) {
+  return {
+    types: [BAN_USER, BAN_USER_SUCCESS, BAN_USER_FAIL],
+    promise: (client) => client.post('/widgets/chats/ban', {data: user})
+  };
+}
+
+export function sendMessageFunc(messageStruct) {
+  return {
+    types: [SEND_MESSAGE, SEND_MESSAGE_SUCCESS, SEND_MESSAGE_FAIL],
+    promise: (client) => client.post('/widgets/chats/send', {data: messageStruct}),
   };
 }

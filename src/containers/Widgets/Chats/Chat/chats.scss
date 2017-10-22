@@ -1,5 +1,5 @@
 .chats {
-    height: 700px;
+    height: 500px;
     width: 500px;
     font-size: 16px;
     overflow-y: overlay;
@@ -8,6 +8,8 @@
 
 .messageWrap {
     padding-right: 10px;
+    float: left;
+    width: 100%;
 }
 
 .anotherMessagesWrap {
@@ -28,4 +30,72 @@
 
 .anotherMessages {
     padding-right: 10px;
+}
+
+.banPlash {
+    position: absolute;
+    top: 10px;
+    left: 10%;
+    width: 50%;
+    background: rgba(53, 52, 52, 0.62);
+    border: 1px solid #777777;
+    color: lavender;
+}
+
+
+.nicknameBadge {
+  background-size: 16px;
+  background-repeat: no-repeat;
+  padding-left: 20px;
+  padding-right: 5px;
+  float: left;
+}
+
+.goodgameNicknameBadge {
+  background-image: url('https://goodgame.ru/favicon.ico');
+}
+
+.twitchNicknameBadge {
+  background-image: url('https://www.twitch.tv/favicon.ico');
+}
+.youtubeNicknameBadge {
+  background-image: url('http://youtube.com/favicon.ico');
+}
+.pekaNicknameBadge {
+  background-image: url('http://peka2.tv/apple-touch-icon.png');
+}
+
+.fullMessage {
+  width: 100%;
+  float: left;
+  background-color: #1a1a1a;
+  border-bottom: 2px #f1f1f1 solid;
+  padding: 5px 2px;
+  font-size: 16px;
+}
+
+.badge {
+  float: left;
+  padding: 0 4px 0px 0px;
+  height: 19px;
+}
+
+.nickname {
+  float: left;
+  padding: 0;
+  // line-height: 30px;
+  margin: 0;
+  color: #7797be;
+  cursor: pointer;
+}
+
+.separator {
+  float: left;
+  content: ":";
+}
+
+.message {
+  padding: 0 5px;
+  display: block;
+  color: #b2b2b2;
 }

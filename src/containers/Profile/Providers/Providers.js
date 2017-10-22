@@ -6,28 +6,6 @@ import {providerIco, channelUrl} from 'utils/providers';
 import {removeProvider} from 'redux/modules/auth';
 import {ProvidersConnect} from 'components/Auth/ProvidersConnect';
 
-// function providerIco(provider) {
-//   switch (provider) {
-//     case 'gplus':
-//       return 'https://s.ytimg.com/yts/img/favicon-vflz7uhzw.ico';
-//     case 'twitch':
-//       return 'https://www.twitch.tv/favicon.ico';
-//     default:
-//       return '';
-//   }
-// }
-
-// function channelUrl(provider, uid) {
-//   switch (provider) {
-//     case 'gplus':
-//       return 'https://www.youtube.com/channel/' + uid;
-//     case 'twitch':
-//       return 'https://twitch.tv/' + uid;
-//     default:
-//       return '';
-//   }
-// }
-
 
 @connect(
   state => ({
@@ -55,8 +33,8 @@ export default class Providers extends PureComponent {
         <div className={'col-md-12'}>
         {this.props.providers.map((provider) =>
           <div key={provider.id} className={'col-md-12'}>
-            <div className={'col-md-1'}><img src={providerIco(provider.type_provider)}/></div>
-            <div className={'col-md-6'}><a href={channelUrl(provider.type_provider, provider.uid)} target="_blank">{provider.uid}</a></div>
+            <div className={'col-md-1'}><img src={providerIco(provider.type_provider)} style={{width: 16, height: 16}}/></div>
+            <div className={'col-md-6'}><a href={channelUrl(provider.type_provider, {uid: provider.uid})} target="_blank">{provider.uid}</a></div>
             <div className={'col-md-5'}><Button onClick={handleDelete(provider)}>Удалить</Button></div>
           </div>
         )}
